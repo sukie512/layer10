@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Layer10 — Grounded Memory Graph</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0e14;
+    --surface: #111620;
+    --surface2: #1a2233;
+    --border: #1e2d45;
+    --accent: #00d4ff;
+    --accent2: #ff6b35;
+    --accent3: #39ff14;
+    --text: #c8d8e8;
+    --text-dim: #5a7a9a;
+    --text-bright: #e8f4ff;
+    --warn: #ffb347;
+    --danger: #ff4444;
+    --success: #39ff14;
+    --historical: #888;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── TOP BAR ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .logo span { color: var(--text-dim); }
+
+  .search-bar {
+    flex: 1;
+    max-width: 480px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .search-bar input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 7px 12px;
+    color: var(--text-bright);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-bar input:focus { border-color: var(--accent); }
+  .search-bar input::placeholder { color: var(--text-dim); }
+
+  .search-bar button {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    padding: 7px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: opacity 0.2s;
+  }
+
+  .search-bar button:hover { opacity: 0.85; }
+
+  .stats-bar {
+    margin-left: auto;
+    display: flex;
+    gap: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+  }
+
+  .stat { color: var(--text-dim); }
+  .stat strong { color: var(--accent); }
+
+  /* ── MAIN LAYOUT ── */
+  .main {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* ── LEFT SIDEBAR ── */
+  .sidebar {
+    width: 280px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .sidebar-section {
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+  }
+
+  .sidebar-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .filter-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
+  }
+
+  .filter-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0,212,255,0.08);
+  }
+
+  .filter-btn:hover:not(.active) {
+    border-color: var(--text-dim);
+    color: var(--text);
+  }
+
+  .entity-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+  }
+
+  .entity-item {
+    padding: 8px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.15s;
+    margin-bottom: 2px;
+  }
+
+  .entity-item:hover { background: var(--surface2); }
+  .entity-item.selected { background: rgba(0,212,255,0.1); border-left: 2px solid var(--accent); }
+
+  .entity-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .entity-name {
+    font-size: 12px;
+    color: var(--text);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .entity-type-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── GRAPH CANVAS ── */
+  .graph-area {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #graphCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .graph-controls {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .ctrl-btn {
+    width: 32px;
+    height: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s;
+  }
+
+  .ctrl-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── RIGHT PANEL ── */
+  .right-panel {
+    width: 380px;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .panel-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  .tab-content {
+    flex: 1;
+    overflow-y: auto;
+    display: none;
+    padding: 16px;
+  }
+
+  .tab-content.active { display: block; }
+
+  /* ── DETAIL CARDS ── */
+  .detail-header {
+    margin-bottom: 16px;
+  }
+
+  .detail-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 4px;
+  }
+
+  .detail-subtitle {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .claims-section { margin-bottom: 20px; }
+
+  .claims-section-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .claim-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    position: relative;
+  }
+
+  .claim-card:hover { border-color: var(--accent); }
+  .claim-card.historical { opacity: 0.6; border-style: dashed; }
+
+  .claim-type-tag {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .claim-relation {
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .claim-relation .arrow { color: var(--accent); margin: 0 4px; }
+
+  .claim-meta {
+    display: flex;
+    gap: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+
+  .conf-bar {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .conf-track {
+    width: 40px;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .conf-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--accent3);
+  }
+
+  .historical-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--warn);
+    background: rgba(255,179,71,0.1);
+    border: 1px solid rgba(255,179,71,0.3);
+    padding: 1px 5px;
+    border-radius: 3px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
+
+  /* ── EVIDENCE PANEL ── */
+  .evidence-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+
+  .evidence-source {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .evidence-excerpt {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text);
+    background: var(--surface2);
+    border-left: 3px solid var(--accent);
+    padding: 8px 10px;
+    border-radius: 0 4px 4px 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+
+  .evidence-meta {
+    display: flex;
+    gap: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  .email-full {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+
+  .email-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .email-subject {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-bright);
+  }
+
+  .email-ts {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    white-space: nowrap;
+    margin-left: 8px;
+  }
+
+  .email-field {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-bottom: 3px;
+  }
+
+  .email-field span { color: var(--text); }
+
+  .email-body {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text);
+    white-space: pre-wrap;
+    margin-top: 10px;
+    line-height: 1.6;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+  }
+
+  .redacted-badge {
+    background: rgba(255,68,68,0.15);
+    border: 1px solid var(--danger);
+    color: var(--danger);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-left: 8px;
+  }
+
+  /* ── SEARCH RESULTS ── */
+  .search-result {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+
+  .search-result-rank {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+
+  .search-result-claim {
+    font-size: 13px;
+    color: var(--text-bright);
+    margin-bottom: 8px;
+  }
+
+  .search-evidence-preview {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    background: var(--surface2);
+    padding: 6px 8px;
+    border-radius: 3px;
+    border-left: 2px solid var(--accent2);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+  /* ── TOOLTIP ── */
+  #tooltip {
+    position: fixed;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 1000;
+    display: none;
+    max-width: 280px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  #tooltip .tt-name {
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 4px;
+  }
+
+  #tooltip .tt-type {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-dim);
+  }
+
+  .empty-state-icon { font-size: 32px; margin-bottom: 12px; }
+  .empty-state-text { font-size: 13px; line-height: 1.6; }
+
+  /* ── LEGEND ── */
+  .legend {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(17,22,32,0.9);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+    color: var(--text-dim);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--text-dim);
+    gap: 12px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  .alias-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+  }
+
+  .alias-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">LAYER<span>10</span> // MEMORY GRAPH</div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Ask a question… e.g. 'Who was CFO?' or 'What did Watkins raise?'" />
+    <button onclick="doSearch()">QUERY</button>
+  </div>
+  <div class="stats-bar">
+    <div class="stat">Entities: <strong id="statEntities">—</strong></div>
+    <div class="stat">Claims: <strong id="statClaims">—</strong></div>
+    <div class="stat">Evidence: <strong id="statEvidence">—</strong></div>
+    <div class="stat">Sources: <strong id="statSources">—</strong></div>
+  </div>
+</header>
+
+<div class="main">
+  <!-- LEFT SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Entity Types</div>
+      <div class="filter-group" id="typeFilters">
+        <button class="filter-btn active" data-type="ALL" onclick="filterByType('ALL',this)">ALL</button>
+        <button class="filter-btn" data-type="Person" onclick="filterByType('Person',this)">PERSON</button>
+        <button class="filter-btn" data-type="Organization" onclick="filterByType('Organization',this)">ORG</button>
+        <button class="filter-btn" data-type="Role" onclick="filterByType('Role',this)">ROLE</button>
+        <button class="filter-btn" data-type="Project" onclick="filterByType('Project',this)">PROJECT</button>
+        <button class="filter-btn" data-type="FinancialItem" onclick="filterByType('FinancialItem',this)">FINANCIAL</button>
+        <button class="filter-btn" data-type="Event" onclick="filterByType('Event',this)">EVENT</button>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Quick Queries</div>
+      <div class="filter-group">
+        <button class="filter-btn" onclick="quickQuery('Who was CFO of Enron?')">CFO query</button>
+        <button class="filter-btn" onclick="quickQuery('Did Skilling resign?')">Skilling</button>
+        <button class="filter-btn" onclick="quickQuery('What concerns did Sherron Watkins raise?')">Watkins</button>
+        <button class="filter-btn" onclick="quickQuery('What was the Q3 revenue target?')">Revenue</button>
+        <button class="filter-btn" onclick="quickQuery('What happened with the LJM debt?')">LJM debt</button>
+      </div>
+    </div>
+    <div style="padding: 8px; flex:1; overflow:hidden; display:flex; flex-direction:column;">
+      <div class="sidebar-title" style="padding: 4px 8px;">Entities</div>
+      <div class="entity-list" id="entityList"></div>
+    </div>
+  </div>
+
+  <!-- GRAPH CANVAS -->
+  <div class="graph-area">
+    <canvas id="graphCanvas"></canvas>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#00d4ff"></div>Person</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ff6b35"></div>Organization</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#a855f7"></div>Role</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#39ff14"></div>Financial</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ffb347"></div>Project/Event</div>
+      <div style="margin-top:6px; border-top:1px solid #1e2d45; padding-top:6px; color:#5a7a9a">
+        <div>─── Active claim</div>
+        <div style="opacity:0.5">- - - Historical</div>
+      </div>
+    </div>
+    <div class="graph-controls">
+      <button class="ctrl-btn" onclick="zoom(1.2)" title="Zoom In">+</button>
+      <button class="ctrl-btn" onclick="zoom(0.8)" title="Zoom Out">−</button>
+      <button class="ctrl-btn" onclick="resetView()" title="Reset">⌂</button>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="panel-tabs">
+      <button class="tab-btn active" onclick="switchTab('detail',this)">DETAIL</button>
+      <button class="tab-btn" onclick="switchTab('evidence',this)">EVIDENCE</button>
+      <button class="tab-btn" onclick="switchTab('search',this)">SEARCH</button>
+    </div>
+    <div id="tab-detail" class="tab-content active">
+      <div class="empty-state">
+        <div class="empty-state-icon">◈</div>
+        <div class="empty-state-text">Click any node or edge<br>to inspect its claims and evidence</div>
+      </div>
+    </div>
+    <div id="tab-evidence" class="tab-content">
+      <div class="empty-state">
+        <div class="empty-state-icon">◑</div>
+        <div class="empty-state-text">Click a claim to view<br>full source emails</div>
+      </div>
+    </div>
+    <div id="tab-search" class="tab-content">
+      <div class="empty-state">
+        <div class="empty-state-icon">◎</div>
+        <div class="empty-state-text">Use the search bar above<br>to query the memory graph</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tooltip"></div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// DATA  (embedded memory graph output)
+// ════════════════════════════════════════════════════════════
+
+const GRAPH = {"artifacts": [{"artifact_id": "msg-001", "source_type": "email", "timestamp": "2001-09-05T09:12:00Z", "content": "Jeff, Andy,\n\nWe need to hit $45B in revenue for Q3. I've spoken with the board and they are fully behind us. Andy, please make sure the SPE structures support this. Jeff will be taking over as CFO effective October 1st.\n\nKen", "metadata": {"from": "kenneth.lay@enron.com", "to": ["jeffrey.skilling@enron.com", "andrew.fastow@enron.com"], "cc": [], "subject": "Q3 Revenue Targets", "thread_id": "thread-alpha", "message_id": "<001@enron.com>"}, "redacted": false, "ingest_version": "v1.0"}, {"artifact_id": "msg-002", "source_type": "email", "timestamp": "2001-09-05T11:30:00Z", "content": "Ken,\n\nUnderstood on the $45B target. However I want to flag that the broadband segment is tracking $2B below plan. We may need to restate.\n\nOn the CFO role \u2013 I think Andy should remain CFO; I'd rather stay as CEO. Can we revisit?\n\nJeff\n\n-----Original Message-----\nFrom: kenneth.lay@enron.com\nSent: 2001-09-05 09:12\nTo: jeffrey.skilling@enron.com; andrew.fastow@enron.com\nSubject: Q3 Revenue Targets\n\nJeff, Andy,\n\nWe need to hit $45B in revenue for Q3 ...", "metadata": {"from": "j.skilling@enron.com", "to": ["kenneth.lay@enron.com"], "cc": ["andrew.fastow@enron.com"], "subject": "RE: Q3 Revenue Targets", "thread_id": "thread-alpha", "message_id": "<002@enron.com>"}, "redacted": false, "ingest_version": "v1.0"}, {"artifact_id": "msg-003", "source_type": "email", "timestamp": "2001-09-06T08:00:00Z", "content": "Jeff \u2013 agreed. Andy stays as CFO. You remain CEO. My earlier note was wrong.\n\nKen", "metadata": {"from": "kenneth.lay@enron.com", "to": ["j.skilling@enron.com", "andrew.fastow@enron.com"], "cc": [], "subject": "RE: RE: Q3 Revenue Targets", "thread_id": "thread-alpha", "message_id": "<003@enron.com>"}, "redacted": false, "ingest_version": "v1.0"}, {"artifact_id": "msg-004", "source_type": "email", "timestamp": "2001-10-12T14:22:00Z", "content": "Sherron,\n\nThe LJM Cayman partnership will be consolidated off-balance-sheet. Legal has signed off. The structure allows us to move $1.2B of debt off the books before year-end.\n\nPlease keep this between us for now.\n\nAndy", "metadata": {"from": "andrew.fastow@enron.com", "to": ["sherron.watkins@enron.com"], "cc": [], "subject": "LJM Cayman \u2013 Accounting Treatment", "thread_id": "thread-beta", "message_id": "<004@enron.com>"}, "redacted": false, "ingest_version": "v1.0"}, {"artifact_id": "msg-005", "source_type": "email", "timestamp": "2001-10-15T09:05:00Z", "content": "Ken,\n\nI am incredibly nervous that we will implode in a wave of accounting scandals. The LJM partnerships and Raptor vehicles look problematic. I strongly urge you to investigate the off-balance-sheet structures before it is too late.\n\nSherron Watkins\nVP Accounting", "metadata": {"from": "sherron.watkins@enron.com", "to": ["kenneth.lay@enron.com"], "cc": [], "subject": "Concerns about accounting", "thread_id": "thread-beta", "message_id": "<005@enron.com>"}, "redacted": false, "ingest_version": "v1.0"}, {"artifact_id": "msg-006", "source_type": "email", "timestamp": "2001-11-01T10:00:00Z", "content": "Team,\n\nEnron remains in strong financial shape. Our stock is undervalued and I am buying more shares personally. The Q3 revenue came in at $44.8B, just below our $45B target but within acceptable range.\n\nKen Lay\nChairman & CEO", "metadata": {"from": "kenneth.lay@enron.com", "to": ["all.employees@enron.com"], "cc": [], "subject": "Company Update", "thread_id": "thread-gamma", "message_id": "<006@enron.com>"}, "redacted": false, "ingest_version": "v1.0"}, {"artifact_id": "msg-007", "source_type": "email", "timestamp": "2001-11-08T16:45:00Z", "content": "Ken,\n\nWe are being forced to restate earnings going back to 1997. The SEC has opened a formal investigation. LJM structures will not survive scrutiny. We need to disclose the $1.2B debt immediately.\n\nAndy", "metadata": {"from": "andrew.fastow@enron.com", "to": ["kenneth.lay@enron.com"], "cc": [], "subject": "Restatement \u2013 URGENT", "thread_id": "thread-gamma", "message_id": "<007@enron.com>"}, "redacted": false, "ingest_version": "v1.0"}, {"artifact_id": "msg-008", "source_type": "email", "timestamp": "2001-10-12T14:55:00Z", "content": "Richard \u2013 FYI, forwarding.\n\n---------- Forwarded message ----------\nFrom: andrew.fastow@enron.com\nTo: sherron.watkins@enron.com\nDate: 2001-10-12\nSubject: LJM Cayman \u2013 Accounting Treatment\n\nSherron,\n\nThe LJM Cayman partnership will be consolidated off-balance-sheet. Legal has signed off. The structure allows us to move $1.2B of debt off the books before year-end.\n\nPlease keep this between us for now.\n\nAndy", "metadata": {"from": "andrew.fastow@enron.com", "to": ["richard.causey@enron.com"], "cc": [], "subject": "FWD: LJM Cayman \u2013 Accounting Treatment", "thread_id": "thread-beta", "message_id": "<008@enron.com>"}, "redacted": false, "ingest_version": "v1.0"}, {"artifact_id": "msg-009", "source_type": "email", "timestamp": "2001-12-01T08:00:00Z", "content": "[This message has been redacted under legal hold order LH-2001-044]", "metadata": {"from": "legal@enron.com", "to": ["andrew.fastow@enron.com"], "cc": [], "subject": "[REDACTED BY LEGAL HOLD]", "thread_id": "thread-delta", "message_id": "<009@enron.com>"}, "redacted": true, "ingest_version": "v1.0"}, {"artifact_id": "msg-010", "source_type": "email", "timestamp": "2001-08-14T07:30:00Z", "content": "Ken,\n\nFor personal reasons I am resigning as CEO effective immediately. I recommend you resume the CEO title. This has nothing to do with the company's financial condition.\n\nJeff Skilling", "metadata": {"from": "jeffrey.skilling@enron.com", "to": ["kenneth.lay@enron.com"], "cc": [], "subject": "My Resignation", "thread_id": "thread-epsilon", "message_id": "<010@enron.com>"}, "redacted": false, "ingest_version": "v1.0"}], "entities": [{"entity_id": "ent-lay", "entity_type": "Person", "canonical_name": "Kenneth Lay", "aliases": ["kenneth.lay@enron.com", "ken lay", "ken", "Chairman & CEO"], "merged_from": [], "metadata": {"email": "kenneth.lay@enron.com"}, "created_at": "", "updated_at": ""}, {"entity_id": "ent-skilling", "entity_type": "Person", "canonical_name": "Jeffrey Skilling", "aliases": ["jeffrey.skilling@enron.com", "j.skilling@enron.com", "jeff skilling", "jeff"], "merged_from": [], "metadata": {"email": "jeffrey.skilling@enron.com"}, "created_at": "", "updated_at": ""}, {"entity_id": "ent-fastow", "entity_type": "Person", "canonical_name": "Andrew Fastow", "aliases": ["andrew.fastow@enron.com", "andy fastow", "andy"], "merged_from": [], "metadata": {"email": "andrew.fastow@enron.com"}, "created_at": "", "updated_at": ""}, {"entity_id": "ent-watkins", "entity_type": "Person", "canonical_name": "Sherron Watkins", "aliases": ["sherron.watkins@enron.com", "sherron watkins", "VP Accounting"], "merged_from": [], "metadata": {"email": "sherron.watkins@enron.com"}, "created_at": "", "updated_at": ""}, {"entity_id": "ent-causey", "entity_type": "Person", "canonical_name": "Richard Causey", "aliases": ["richard.causey@enron.com"], "merged_from": [], "metadata": {}, "created_at": "", "updated_at": ""}, {"entity_id": "ent-enron", "entity_type": "Organization", "canonical_name": "Enron Corporation", "aliases": ["Enron", "enron corp"], "merged_from": [], "metadata": {}, "created_at": "", "updated_at": ""}, {"entity_id": "ent-ljm", "entity_type": "Project", "canonical_name": "LJM Cayman Partnership", "aliases": ["LJM", "LJM Cayman", "ljm cayman"], "merged_from": [], "metadata": {}, "created_at": "", "updated_at": ""}, {"entity_id": "ent-raptor", "entity_type": "Project", "canonical_name": "Raptor SPE", "aliases": ["Raptor", "raptor vehicles", "SPE"], "merged_from": [], "metadata": {}, "created_at": "", "updated_at": ""}, {"entity_id": "ent-role-ceo", "entity_type": "Role", "canonical_name": "CEO", "aliases": ["Chief Executive Officer"], "merged_from": [], "metadata": {}, "created_at": "", "updated_at": ""}, {"entity_id": "ent-role-cfo", "entity_type": "Role", "canonical_name": "CFO", "aliases": ["Chief Financial Officer"], "merged_from": [], "metadata": {}, "created_at": "", "updated_at": ""}, {"entity_id": "ent-role-vp-acct", "entity_type": "Role", "canonical_name": "VP Accounting", "aliases": ["VP Accounting"], "merged_from": [], "metadata": {}, "created_at": "", "updated_at": ""}, {"entity_id": "ent-q3-target", "entity_type": "FinancialItem", "canonical_name": "Q3 Revenue Target $45B", "aliases": ["$45B", "45B revenue target"], "merged_from": [], "metadata": {"amount": "45000000000", "currency": "USD"}, "created_at": "", "updated_at": ""}, {"entity_id": "ent-ljm-debt", "entity_type": "FinancialItem", "canonical_name": "LJM Off-Balance-Sheet Debt $1.2B", "aliases": ["$1.2B debt", "1.2B"], "merged_from": [], "metadata": {"amount": "1200000000", "currency": "USD"}, "created_at": "", "updated_at": ""}, {"entity_id": "ent-evt-resignation", "entity_type": "Event", "canonical_name": "Skilling Resignation Aug 2001", "aliases": ["resignation", "Skilling resigned"], "merged_from": [], "metadata": {"date": "2001-08-14"}, "created_at": "", "updated_at": ""}, {"entity_id": "ent-evt-restatement", "entity_type": "Event", "canonical_name": "Enron Earnings Restatement Nov 2001", "aliases": ["restatement", "earnings restatement"], "merged_from": [], "metadata": {"date": "2001-11-08"}, "created_at": "", "updated_at": ""}, {"entity_id": "ent-legal-dept", "entity_type": "Organization", "canonical_name": "Enron Legal Department", "aliases": ["legal@enron.com", "Legal"], "merged_from": [], "metadata": {}, "created_at": "", "updated_at": ""}, {"entity_id": "ent-all-employees", "entity_type": "Organization", "canonical_name": "All Enron Employees", "aliases": ["all.employees@enron.com"], "merged_from": [], "metadata": {}, "created_at": "", "updated_at": ""}], "claims": [{"claim_id": "clm-05fe5208", "claim_type": "SENT_MESSAGE", "subject_id": "ent-lay", "object_id": null, "object_value": "msg-001", "evidence_ids": ["ev-1b0a4ee5"], "confidence": 0.95, "valid_from": "2001-09-05T09:12:00Z", "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.440627Z", "notes": ""}, {"claim_id": "clm-9464bdea", "claim_type": "HELD_ROLE", "subject_id": "ent-skilling", "object_id": "ent-role-cfo", "object_value": null, "evidence_ids": ["ev-e4ed2981"], "confidence": 0.85, "valid_from": "2001-10-01", "valid_to": "2001-09-06", "superseded_by": "clm-11d7502b", "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.440722Z", "notes": "Later reversed in msg-003"}, {"claim_id": "clm-d8d8ad59", "claim_type": "HAS_REVENUE_TARGET", "subject_id": "ent-enron", "object_id": "ent-q3-target", "object_value": "$45,000,000,000", "evidence_ids": ["ev-573eaa3a", "ev-9e3afd5a", "ev-3d1ed1fb"], "confidence": 0.9, "valid_from": "2001-09-05", "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.440747Z", "notes": ""}, {"claim_id": "clm-c79b34bc", "claim_type": "SENT_MESSAGE", "subject_id": "ent-skilling", "object_id": null, "object_value": "msg-002", "evidence_ids": ["ev-8b557361"], "confidence": 0.95, "valid_from": "2001-09-05T11:30:00Z", "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.440853Z", "notes": ""}, {"claim_id": "clm-0e4b0d6a", "claim_type": "SENT_MESSAGE", "subject_id": "ent-lay", "object_id": null, "object_value": "msg-003", "evidence_ids": ["ev-c5a498e8"], "confidence": 0.95, "valid_from": "2001-09-06T08:00:00Z", "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.440953Z", "notes": ""}, {"claim_id": "clm-61f124f4", "claim_type": "HOLDS_ROLE", "subject_id": "ent-fastow", "object_id": "ent-role-cfo", "object_value": null, "evidence_ids": ["ev-fc66894b"], "confidence": 0.92, "valid_from": "2001-09-06", "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.440976Z", "notes": ""}, {"claim_id": "clm-11d7502b", "claim_type": "DECISION_REVERSED", "subject_id": "ent-lay", "object_id": null, "object_value": "CFO assignment of Skilling", "evidence_ids": ["ev-6d530363"], "confidence": 0.88, "valid_from": "2001-09-06", "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.440997Z", "notes": ""}, {"claim_id": "clm-b07f5f29", "claim_type": "SENT_MESSAGE", "subject_id": "ent-fastow", "object_id": null, "object_value": "msg-004", "evidence_ids": ["ev-ec29561b"], "confidence": 0.95, "valid_from": "2001-10-12T14:22:00Z", "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.441037Z", "notes": ""}, {"claim_id": "clm-85da3c6a", "claim_type": "HAS_DEBT", "subject_id": "ent-enron", "object_id": "ent-ljm-debt", "object_value": "$1,200,000,000", "evidence_ids": ["ev-8da1e451", "ev-913c960c", "ev-8697c0af"], "confidence": 0.88, "valid_from": "2001-10-12", "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.441060Z", "notes": "Off-balance-sheet via LJM Cayman structure"}, {"claim_id": "clm-4d2bfbf5", "claim_type": "INVOLVES_STRUCTURE", "subject_id": "ent-enron", "object_id": "ent-ljm", "object_value": null, "evidence_ids": ["ev-08e13abc", "ev-687ec062", "ev-4fdb8288", "ev-e469fe80"], "confidence": 0.85, "valid_from": "2001-10-12", "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.441078Z", "notes": ""}, {"claim_id": "clm-0c15fb49", "claim_type": "SENT_MESSAGE", "subject_id": "ent-watkins", "object_id": null, "object_value": "msg-005", "evidence_ids": ["ev-863df92a"], "confidence": 0.95, "valid_from": "2001-10-15T09:05:00Z", "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.441115Z", "notes": ""}, {"claim_id": "clm-feeddb99", "claim_type": "CONCERN_RAISED", "subject_id": "ent-watkins", "object_id": "ent-enron", "object_value": "Accounting irregularities", "evidence_ids": ["ev-d2e57bbd"], "confidence": 0.95, "valid_from": "2001-10-15", "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.441155Z", "notes": ""}, {"claim_id": "clm-da4168cd", "claim_type": "WORKS_AT", "subject_id": "ent-watkins", "object_id": "ent-enron", "object_value": null, "evidence_ids": ["ev-c8985883"], "confidence": 0.95, "valid_from": null, "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.441172Z", "notes": ""}, {"claim_id": "clm-f2c080d5", "claim_type": "HOLDS_ROLE", "subject_id": "ent-watkins", "object_id": "ent-role-vp-acct", "object_value": null, "evidence_ids": ["ev-e060f849"], "confidence": 0.95, "valid_from": null, "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.441189Z", "notes": ""}, {"claim_id": "clm-2ab611d5", "claim_type": "SENT_MESSAGE", "subject_id": "ent-lay", "object_id": null, "object_value": "msg-006", "evidence_ids": ["ev-2138edfe"], "confidence": 0.95, "valid_from": "2001-11-01T10:00:00Z", "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.441229Z", "notes": ""}, {"claim_id": "clm-f00bbfa5", "claim_type": "HOLDS_ROLE", "subject_id": "ent-lay", "object_id": "ent-role-ceo", "object_value": null, "evidence_ids": ["ev-e2220112", "ev-ec5778a8", "ev-867d5679"], "confidence": 0.9, "valid_from": "2001-09-01", "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.441247Z", "notes": ""}, {"claim_id": "clm-b017b3c1", "claim_type": "SENT_MESSAGE", "subject_id": "ent-fastow", "object_id": null, "object_value": "msg-007", "evidence_ids": ["ev-5a06e0fe"], "confidence": 0.95, "valid_from": "2001-11-08T16:45:00Z", "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.441299Z", "notes": ""}, {"claim_id": "clm-8577e1e3", "claim_type": "RESTATEMENT", "subject_id": "ent-enron", "object_id": "ent-evt-restatement", "object_value": null, "evidence_ids": ["ev-4aa80754"], "confidence": 0.97, "valid_from": "2001-11-08", "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.441354Z", "notes": ""}, {"claim_id": "clm-df1f2770", "claim_type": "SENT_MESSAGE", "subject_id": "ent-fastow", "object_id": null, "object_value": "msg-008", "evidence_ids": ["ev-85769ea1"], "confidence": 0.95, "valid_from": "2001-10-12T14:55:00Z", "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.441491Z", "notes": ""}, {"claim_id": "clm-8cbc7af7", "claim_type": "SENT_MESSAGE", "subject_id": "ent-skilling", "object_id": null, "object_value": "msg-010", "evidence_ids": ["ev-0534c1bb"], "confidence": 0.95, "valid_from": "2001-08-14T07:30:00Z", "valid_to": null, "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.441628Z", "notes": ""}, {"claim_id": "clm-3e11a412", "claim_type": "RESIGNED", "subject_id": "ent-skilling", "object_id": "ent-role-ceo", "object_value": null, "evidence_ids": ["ev-e3bc0fff"], "confidence": 0.97, "valid_from": "2001-08-14", "valid_to": "2001-08-14", "superseded_by": null, "extraction_version": "v1.0", "extracted_at": "2026-03-06T20:39:30.441654Z", "notes": ""}], "evidences": [{"evidence_id": "ev-1b0a4ee5", "artifact_id": "msg-001", "excerpt": "Jeff, Andy,\n\nWe need to hit $45B in revenue for Q3. I've spoken with the board and they are fully behind us. Andy, please make sure the SPE structures support this. Jeff will be taking over as CFO eff", "char_start": 0, "char_end": 200, "timestamp": "2001-09-05T09:12:00Z"}, {"evidence_id": "ev-e4ed2981", "artifact_id": "msg-001", "excerpt": "Jeff will be taking over as CFO effective October 1st.", "char_start": 165, "char_end": 219, "timestamp": "2001-09-05T09:12:00Z"}, {"evidence_id": "ev-573eaa3a", "artifact_id": "msg-001", "excerpt": "We need to hit $45B in revenue for Q3", "char_start": 13, "char_end": 50, "timestamp": "2001-09-05T09:12:00Z"}, {"evidence_id": "ev-8b557361", "artifact_id": "msg-002", "excerpt": "Ken,\n\nUnderstood on the $45B target. However I want to flag that the broadband segment is tracking $2B below plan. We may need to restate.\n\nOn the CFO role \u2013 I think Andy should remain CFO; I'd rather", "char_start": 0, "char_end": 200, "timestamp": "2001-09-05T11:30:00Z"}, {"evidence_id": "ev-9e3afd5a", "artifact_id": "msg-002", "excerpt": "We need to hit $45B in revenue for Q3", "char_start": 413, "char_end": 450, "timestamp": "2001-09-05T11:30:00Z"}, {"evidence_id": "ev-c5a498e8", "artifact_id": "msg-003", "excerpt": "Jeff \u2013 agreed. Andy stays as CFO. You remain CEO. My earlier note was wrong.\n\nKen", "char_start": 0, "char_end": 81, "timestamp": "2001-09-06T08:00:00Z"}, {"evidence_id": "ev-fc66894b", "artifact_id": "msg-003", "excerpt": "Andy stays as CFO.", "char_start": 15, "char_end": 33, "timestamp": "2001-09-06T08:00:00Z"}, {"evidence_id": "ev-6d530363", "artifact_id": "msg-003", "excerpt": "Andy stays as CFO.", "char_start": 15, "char_end": 33, "timestamp": "2001-09-06T08:00:00Z"}, {"evidence_id": "ev-ec29561b", "artifact_id": "msg-004", "excerpt": "Sherron,\n\nThe LJM Cayman partnership will be consolidated off-balance-sheet. Legal has signed off. The structure allows us to move $1.2B of debt off the books before year-end.\n\nPlease keep this betwee", "char_start": 0, "char_end": 200, "timestamp": "2001-10-12T14:22:00Z"}, {"evidence_id": "ev-913c960c", "artifact_id": "msg-004", "excerpt": "The structure allows us to move $1.2B of debt off the books before year-end.", "char_start": 99, "char_end": 175, "timestamp": "2001-10-12T14:22:00Z"}, {"evidence_id": "ev-4fdb8288", "artifact_id": "msg-004", "excerpt": "LJM Cayman partnership", "char_start": 14, "char_end": 36, "timestamp": "2001-10-12T14:22:00Z"}, {"evidence_id": "ev-863df92a", "artifact_id": "msg-005", "excerpt": "Ken,\n\nI am incredibly nervous that we will implode in a wave of accounting scandals. The LJM partnerships and Raptor vehicles look problematic. I strongly urge you to investigate the off-balance-sheet", "char_start": 0, "char_end": 200, "timestamp": "2001-10-15T09:05:00Z"}, {"evidence_id": "ev-e469fe80", "artifact_id": "msg-005", "excerpt": "LJM", "char_start": 89, "char_end": 92, "timestamp": "2001-10-15T09:05:00Z"}, {"evidence_id": "ev-d2e57bbd", "artifact_id": "msg-005", "excerpt": "I am incredibly nervous that we will implode in a wave of accounting scandals.", "char_start": 6, "char_end": 84, "timestamp": "2001-10-15T09:05:00Z"}, {"evidence_id": "ev-c8985883", "artifact_id": "msg-005", "excerpt": "Sherron Watkins\nVP Accounting", "char_start": 236, "char_end": 265, "timestamp": "2001-10-15T09:05:00Z"}, {"evidence_id": "ev-e060f849", "artifact_id": "msg-005", "excerpt": "VP Accounting", "char_start": 252, "char_end": 265, "timestamp": "2001-10-15T09:05:00Z"}, {"evidence_id": "ev-2138edfe", "artifact_id": "msg-006", "excerpt": "Team,\n\nEnron remains in strong financial shape. Our stock is undervalued and I am buying more shares personally. The Q3 revenue came in at $44.8B, just below our $45B target but within acceptable rang", "char_start": 0, "char_end": 200, "timestamp": "2001-11-01T10:00:00Z"}, {"evidence_id": "ev-ec5778a8", "artifact_id": "msg-006", "excerpt": "Ken Lay\nChairman & CEO", "char_start": 204, "char_end": 226, "timestamp": "2001-11-01T10:00:00Z"}, {"evidence_id": "ev-3d1ed1fb", "artifact_id": "msg-006", "excerpt": "Team,\n\nEnron remains in strong financial shape. Our stock is undervalued and I am buying more shares personally. The Q3 ", "char_start": 0, "char_end": 120, "timestamp": "2001-11-01T10:00:00Z"}, {"evidence_id": "ev-5a06e0fe", "artifact_id": "msg-007", "excerpt": "Ken,\n\nWe are being forced to restate earnings going back to 1997. The SEC has opened a formal investigation. LJM structures will not survive scrutiny. We need to disclose the $1.2B debt immediately.\n\n", "char_start": 0, "char_end": 200, "timestamp": "2001-11-08T16:45:00Z"}, {"evidence_id": "ev-8697c0af", "artifact_id": "msg-007", "excerpt": "Ken,\n\nWe are being forced to restate earnings going back to 1997. The SEC has opened a formal investigation. LJM structures will not survive scrutiny. We need to disclose the $1.2B debt immediately.\n\n", "char_start": 0, "char_end": 200, "timestamp": "2001-11-08T16:45:00Z"}, {"evidence_id": "ev-687ec062", "artifact_id": "msg-007", "excerpt": "LJM", "char_start": 109, "char_end": 112, "timestamp": "2001-11-08T16:45:00Z"}, {"evidence_id": "ev-4aa80754", "artifact_id": "msg-007", "excerpt": "We are being forced to restate earnings going back to 1997.", "char_start": 6, "char_end": 65, "timestamp": "2001-11-08T16:45:00Z"}, {"evidence_id": "ev-85769ea1", "artifact_id": "msg-008", "excerpt": "From: andrew.fastow@enron.com", "char_start": 68, "char_end": 97, "timestamp": "2001-10-12T14:55:00Z"}, {"evidence_id": "ev-8da1e451", "artifact_id": "msg-008", "excerpt": "The structure allows us to move $1.2B of debt off the books before year-end.", "char_start": 288, "char_end": 364, "timestamp": "2001-10-12T14:55:00Z"}, {"evidence_id": "ev-08e13abc", "artifact_id": "msg-008", "excerpt": "LJM Cayman partnership", "char_start": 203, "char_end": 225, "timestamp": "2001-10-12T14:55:00Z"}, {"evidence_id": "ev-0534c1bb", "artifact_id": "msg-010", "excerpt": "Ken,\n\nFor personal reasons I am resigning as CEO effective immediately. I recommend you resume the CEO title. This has nothing to do with the company's financial condition.\n\nJeff Skilling", "char_start": 0, "char_end": 187, "timestamp": "2001-08-14T07:30:00Z"}, {"evidence_id": "ev-e3bc0fff", "artifact_id": "msg-010", "excerpt": "I am resigning as CEO effective immediately.", "char_start": 27, "char_end": 71, "timestamp": "2001-08-14T07:30:00Z"}, {"evidence_id": "ev-867d5679", "artifact_id": "msg-010", "excerpt": "I am resigning as CEO effective immediately.", "char_start": 27, "char_end": 71, "timestamp": "2001-08-14T07:30:00Z"}, {"evidence_id": "ev-e2220112", "artifact_id": "msg-010", "excerpt": "resume the CEO title", "char_start": 88, "char_end": 108, "timestamp": "2001-08-14T07:30:00Z"}], "dup_map": {}};
+
+// ════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════
+
+const entityMap = Object.fromEntries(GRAPH.entities.map(e => [e.entity_id, e]));
+const evidenceMap = Object.fromEntries(GRAPH.evidences.map(e => [e.evidence_id, e]));
+const artifactMap = Object.fromEntries(GRAPH.artifacts.map(a => [a.artifact_id, a]));
+
+let nodes = [], edges = [];
+let selectedNode = null;
+let selectedEdge = null;
+let filterType = 'ALL';
+let transform = { x: 0, y: 0, scale: 1 };
+let dragging = null, dragStart = null, panStart = null;
+let hoveredNode = null, hoveredEdge = null;
+
+// ════════════════════════════════════════════════════════════
+// ENTITY COLORS
+// ════════════════════════════════════════════════════════════
+
+const TYPE_COLORS = {
+  Person: '#00d4ff',
+  Organization: '#ff6b35',
+  Role: '#a855f7',
+  FinancialItem: '#39ff14',
+  Project: '#ffb347',
+  Event: '#ffb347',
+};
+
+function entityColor(type) {
+  return TYPE_COLORS[type] || '#888';
+}
+
+// ════════════════════════════════════════════════════════════
+// CLAIM TYPE COLORS
+// ════════════════════════════════════════════════════════════
+
+const CLAIM_COLORS = {
+  HOLDS_ROLE: '#a855f7',
+  HELD_ROLE: '#555',
+  WORKS_AT: '#ff6b35',
+  RESIGNED: '#ff4444',
+  HAS_REVENUE_TARGET: '#39ff14',
+  HAS_DEBT: '#ff4444',
+  INVOLVES_STRUCTURE: '#ffb347',
+  DECISION_MADE: '#00d4ff',
+  DECISION_REVERSED: '#ff6b35',
+  CONCERN_RAISED: '#ff4444',
+  RESTATEMENT: '#ff4444',
+  RELATED_TO: '#555',
+  SENT_MESSAGE: '#1e2d45',
+};
+
+// ════════════════════════════════════════════════════════════
+// FORCE-DIRECTED LAYOUT (simple spring physics)
+// ════════════════════════════════════════════════════════════
+
+function initGraph() {
+  const canvas = document.getElementById('graphCanvas');
+  const W = canvas.parentElement.clientWidth;
+  const H = canvas.parentElement.clientHeight;
+
+  // Filter to non-SENT_MESSAGE claims for visual edges
+  const vizClaims = GRAPH.claims.filter(c => c.claim_type !== 'SENT_MESSAGE' && c.object_id);
+
+  // Collect referenced entity IDs
+  const refIds = new Set();
+  GRAPH.entities.forEach(e => refIds.add(e.entity_id));
+
+  // Build nodes
+  nodes = GRAPH.entities.map((ent, i) => ({
+    id: ent.entity_id,
+    label: ent.canonical_name,
+    type: ent.entity_type,
+    color: entityColor(ent.entity_type),
+    x: W/2 + (Math.random()-0.5) * W * 0.6,
+    y: H/2 + (Math.random()-0.5) * H * 0.6,
+    vx: 0, vy: 0,
+    r: ent.entity_type === 'Person' ? 22 : ent.entity_type === 'Organization' ? 28 : 16,
+  }));
+
+  const nodeIndex = Object.fromEntries(nodes.map((n,i) => [n.id, i]));
+
+  // Build edges
+  edges = vizClaims.map(c => ({
+    claim: c,
+    source: nodeIndex[c.subject_id],
+    target: nodeIndex[c.object_id],
+    color: CLAIM_COLORS[c.claim_type] || '#555',
+    dashed: !!c.superseded_by,
+  })).filter(e => e.source !== undefined && e.target !== undefined);
+
+  // Run physics
+  for (let iter = 0; iter < 200; iter++) {
+    simulateStep(W, H);
+  }
+
+  transform = { x: 0, y: 0, scale: 1 };
+  render();
+}
+
+function simulateStep(W, H) {
+  const k = 80, repulse = 5000, damping = 0.85;
+  const cx = W/2, cy = H/2;
+
+  // Reset forces
+  nodes.forEach(n => { n.fx = (cx - n.x) * 0.002; n.fy = (cy - n.y) * 0.002; });
+
+  // Repulsion
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i+1; j < nodes.length; j++) {
+      const dx = nodes[i].x - nodes[j].x;
+      const dy = nodes[i].y - nodes[j].y;
+      const d2 = dx*dx + dy*dy + 1;
+      const f = repulse / d2;
+      nodes[i].fx += f * dx / Math.sqrt(d2);
+      nodes[i].fy += f * dy / Math.sqrt(d2);
+      nodes[j].fx -= f * dx / Math.sqrt(d2);
+      nodes[j].fy -= f * dy / Math.sqrt(d2);
+    }
+  }
+
+  // Spring attraction along edges
+  edges.forEach(e => {
+    const s = nodes[e.source], t = nodes[e.target];
+    if (!s || !t) return;
+    const dx = t.x - s.x, dy = t.y - s.y;
+    const d = Math.sqrt(dx*dx + dy*dy) + 0.1;
+    const f = (d - k * 2) * 0.05;
+    const fx = f * dx/d, fy = f * dy/d;
+    s.fx += fx; s.fy += fy;
+    t.fx -= fx; t.fy -= fy;
+  });
+
+  // Integrate
+  nodes.forEach(n => {
+    if (n === dragging) return;
+    n.vx = (n.vx + n.fx) * damping;
+    n.vy = (n.vy + n.fy) * damping;
+    n.x += n.vx;
+    n.y += n.vy;
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+// RENDERING
+// ════════════════════════════════════════════════════════════
+
+function render() {
+  const canvas = document.getElementById('graphCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.parentElement.clientWidth;
+  canvas.height = canvas.parentElement.clientHeight;
+
+  ctx.fillStyle = '#0a0e14';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.save();
+  ctx.translate(transform.x, transform.y);
+  ctx.scale(transform.scale, transform.scale);
+
+  // Draw edges
+  edges.forEach((e, i) => {
+    const s = nodes[e.source], t = nodes[e.target];
+    if (!s || !t) return;
+
+    const isSelected = selectedEdge && selectedEdge.claim.claim_id === e.claim.claim_id;
+    const isHovered = hoveredEdge && hoveredEdge.claim.claim_id === e.claim.claim_id;
+    const hide = filterType !== 'ALL' && nodes[e.source].type !== filterType && nodes[e.target].type !== filterType;
+
+    ctx.save();
+    ctx.globalAlpha = hide ? 0.05 : (isSelected || isHovered ? 1 : 0.6);
+
+    // Curve for multi-edges
+    const dx = t.x - s.x, dy = t.y - s.y;
+    const mx = (s.x + t.x) / 2, my = (s.y + t.y) / 2;
+    const perp = { x: -dy * 0.15, y: dx * 0.15 };
+
+    ctx.beginPath();
+    ctx.moveTo(s.x, s.y);
+    ctx.quadraticCurveTo(mx + perp.x, my + perp.y, t.x, t.y);
+    ctx.strokeStyle = isSelected ? '#fff' : e.color;
+    ctx.lineWidth = isSelected ? 2.5 : (isHovered ? 2 : 1.5);
+    if (e.dashed) ctx.setLineDash([5,4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Arrowhead
+    const angle = Math.atan2(t.y - (my+perp.y), t.x - (mx+perp.x));
+    const ar = t.r + 4;
+    const ax = t.x - ar * Math.cos(angle);
+    const ay = t.y - ar * Math.sin(angle);
+    ctx.beginPath();
+    ctx.moveTo(ax, ay);
+    ctx.lineTo(ax - 8*Math.cos(angle-0.4), ay - 8*Math.sin(angle-0.4));
+    ctx.lineTo(ax - 8*Math.cos(angle+0.4), ay - 8*Math.sin(angle+0.4));
+    ctx.closePath();
+    ctx.fillStyle = isSelected ? '#fff' : e.color;
+    ctx.fill();
+
+    // Edge label
+    if (isSelected || isHovered) {
+      ctx.font = '9px IBM Plex Mono';
+      ctx.fillStyle = '#fff';
+      ctx.textAlign = 'center';
+      ctx.fillText(e.claim.claim_type, mx + perp.x, my + perp.y - 8);
+    }
+
+    ctx.restore();
+  });
+
+  // Draw nodes
+  nodes.forEach((n, i) => {
+    const isSelected = selectedNode && selectedNode.id === n.id;
+    const isHovered = hoveredNode && hoveredNode.id === n.id;
+    const hide = filterType !== 'ALL' && n.type !== filterType;
+
+    ctx.save();
+    ctx.globalAlpha = hide ? 0.1 : 1;
+
+    const r = n.r + (isSelected || isHovered ? 3 : 0);
+
+    // Glow
+    if (isSelected || isHovered) {
+      const grd = ctx.createRadialGradient(n.x, n.y, r*0.5, n.x, n.y, r*2.5);
+      grd.addColorStop(0, n.color + '40');
+      grd.addColorStop(1, n.color + '00');
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r*2.5, 0, Math.PI*2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+    }
+
+    // Node circle
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, r, 0, Math.PI*2);
+    ctx.fillStyle = '#111620';
+    ctx.fill();
+    ctx.strokeStyle = isSelected ? '#fff' : (isHovered ? n.color : n.color + '99');
+    ctx.lineWidth = isSelected ? 2.5 : (isHovered ? 2 : 1.5);
+    ctx.stroke();
+
+    // Inner dot
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, r * 0.45, 0, Math.PI*2);
+    ctx.fillStyle = n.color + (isSelected ? 'ff' : '88');
+    ctx.fill();
+
+    // Label
+    ctx.font = `${isSelected ? '600 ' : ''}11px IBM Plex Sans`;
+    ctx.fillStyle = isSelected ? '#fff' : (hide ? '#333' : '#c8d8e8');
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    const shortLabel = n.label.length > 18 ? n.label.slice(0,16)+'…' : n.label;
+    ctx.fillText(shortLabel, n.x, n.y + r + 4);
+
+    ctx.restore();
+  });
+
+  ctx.restore();
+}
+
+// ════════════════════════════════════════════════════════════
+// INTERACTION
+// ════════════════════════════════════════════════════════════
+
+function getNodeAt(cx, cy) {
+  const wx = (cx - transform.x) / transform.scale;
+  const wy = (cy - transform.y) / transform.scale;
+  for (let i = nodes.length-1; i >= 0; i--) {
+    const n = nodes[i];
+    const d = Math.sqrt((wx-n.x)**2 + (wy-n.y)**2);
+    if (d < n.r + 4) return n;
+  }
+  return null;
+}
+
+function getEdgeAt(cx, cy) {
+  const wx = (cx - transform.x) / transform.scale;
+  const wy = (cy - transform.y) / transform.scale;
+  for (const e of edges) {
+    const s = nodes[e.source], t = nodes[e.target];
+    if (!s||!t) continue;
+    const mx = (s.x+t.x)/2, my = (s.y+t.y)/2;
+    const dx = t.x-s.x, dy = t.y-s.y;
+    const perp = {x:-dy*0.15, y:dx*0.15};
+    // Sample points on quadratic curve
+    for (let tt = 0; tt <= 1; tt += 0.1) {
+      const bx = (1-tt)**2*s.x + 2*(1-tt)*tt*(mx+perp.x) + tt**2*t.x;
+      const by = (1-tt)**2*s.y + 2*(1-tt)*tt*(my+perp.y) + tt**2*t.y;
+      if (Math.sqrt((wx-bx)**2+(wy-by)**2) < 8) return e;
+    }
+  }
+  return null;
+}
+
+const canvas = document.getElementById('graphCanvas');
+
+canvas.addEventListener('mousedown', e => {
+  const n = getNodeAt(e.offsetX, e.offsetY);
+  if (n) {
+    dragging = n;
+    dragStart = { mx: e.offsetX, my: e.offsetY, nx: n.x, ny: n.y };
+  } else {
+    panStart = { mx: e.offsetX, my: e.offsetY, tx: transform.x, ty: transform.y };
+  }
+});
+
+canvas.addEventListener('mousemove', e => {
+  if (dragging) {
+    const dx = (e.offsetX - dragStart.mx) / transform.scale;
+    const dy = (e.offsetY - dragStart.my) / transform.scale;
+    dragging.x = dragStart.nx + dx;
+    dragging.y = dragStart.ny + dy;
+    dragging.vx = 0; dragging.vy = 0;
+    render();
+    return;
+  }
+  if (panStart) {
+    transform.x = panStart.tx + (e.offsetX - panStart.mx);
+    transform.y = panStart.ty + (e.offsetY - panStart.my);
+    render();
+    return;
+  }
+
+  const n = getNodeAt(e.offsetX, e.offsetY);
+  const ed = n ? null : getEdgeAt(e.offsetX, e.offsetY);
+  const changed = n !== hoveredNode || ed !== hoveredEdge;
+  hoveredNode = n; hoveredEdge = ed;
+
+  const tt = document.getElementById('tooltip');
+  if (n) {
+    tt.style.display = 'block';
+    tt.style.left = (e.clientX + 12) + 'px';
+    tt.style.top = (e.clientY - 10) + 'px';
+    tt.innerHTML = `<div class="tt-name">${n.label}</div><div class="tt-type">${n.type}</div>`;
+    canvas.style.cursor = 'pointer';
+  } else if (ed) {
+    tt.style.display = 'block';
+    tt.style.left = (e.clientX + 12) + 'px';
+    tt.style.top = (e.clientY - 10) + 'px';
+    const s = entityMap[ed.claim.subject_id];
+    const o = entityMap[ed.claim.object_id];
+    tt.innerHTML = `<div class="tt-name">${ed.claim.claim_type}</div><div class="tt-type">${s?.canonical_name} → ${o?.canonical_name}</div><div style="margin-top:4px;font-size:10px;color:#5a7a9a">conf: ${ed.claim.confidence}${ed.dashed?' · HISTORICAL':''}</div>`;
+    canvas.style.cursor = 'pointer';
+  } else {
+    tt.style.display = 'none';
+    canvas.style.cursor = 'grab';
+  }
+  if (changed) render();
+});
+
+canvas.addEventListener('mouseup', e => {
+  if (dragging && dragStart && Math.abs(e.offsetX - dragStart.mx) < 5 && Math.abs(e.offsetY - dragStart.my) < 5) {
+    // Click
+    selectNode(dragging);
+  } else if (!dragging && panStart && Math.abs(e.offsetX - panStart.mx) < 5 && Math.abs(e.offsetY - panStart.my) < 5) {
+    // Click on edge?
+    const ed = getEdgeAt(e.offsetX, e.offsetY);
+    if (ed) selectEdge(ed);
+    else { selectedNode = null; selectedEdge = null; render(); showEmptyDetail(); }
+  }
+  dragging = null; panStart = null;
+});
+
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  const factor = e.deltaY < 0 ? 1.1 : 0.9;
+  const cx = e.offsetX, cy = e.offsetY;
+  transform.x = cx - factor * (cx - transform.x);
+  transform.y = cy - factor * (cy - transform.y);
+  transform.scale *= factor;
+  render();
+}, {passive: false});
+
+canvas.addEventListener('mouseleave', () => {
+  document.getElementById('tooltip').style.display = 'none';
+  hoveredNode = null; hoveredEdge = null;
+  dragging = null; panStart = null;
+});
+
+function zoom(f) {
+  const cx = canvas.width/2, cy = canvas.height/2;
+  transform.x = cx - f*(cx-transform.x);
+  transform.y = cy - f*(cy-transform.y);
+  transform.scale *= f;
+  render();
+}
+
+function resetView() {
+  transform = {x:0,y:0,scale:1};
+  render();
+}
+
+// ════════════════════════════════════════════════════════════
+// DETAIL PANEL
+// ════════════════════════════════════════════════════════════
+
+function selectNode(n) {
+  selectedNode = n;
+  selectedEdge = null;
+  render();
+  showNodeDetail(n);
+  switchTab('detail', document.querySelector('.tab-btn'));
+}
+
+function selectEdge(e) {
+  selectedEdge = e;
+  selectedNode = null;
+  render();
+  showClaimDetail(e.claim);
+  switchTab('detail', document.querySelector('.tab-btn'));
+}
+
+function showEmptyDetail() {
+  document.getElementById('tab-detail').innerHTML = `
+    <div class="empty-state">
+      <div class="empty-state-icon">◈</div>
+      <div class="empty-state-text">Click any node or edge<br>to inspect its claims and evidence</div>
+    </div>`;
+}
+
+function claimLabel(c) {
+  const subj = entityMap[c.subject_id]?.canonical_name || c.subject_id;
+  const obj = c.object_id ? (entityMap[c.object_id]?.canonical_name || c.object_id) : (c.object_value || '—');
+  return `${subj} → ${obj}`;
+}
+
+function claimTypeColor(ct) {
+  return CLAIM_COLORS[ct] || '#555';
+}
+
+function claimCard(c, onclick) {
+  const historical = !!c.superseded_by;
+  const col = claimTypeColor(c.claim_type);
+  const sub = entityMap[c.subject_id]?.canonical_name || c.subject_id;
+  const obj = c.object_id ? (entityMap[c.object_id]?.canonical_name || c.object_id) : (c.object_value || '');
+  const pct = Math.round(c.confidence * 100);
+  const vf = c.valid_from ? c.valid_from.slice(0,10) : '—';
+  const vt = c.valid_to ? c.valid_to.slice(0,10) : 'present';
+
+  return `<div class="claim-card ${historical?'historical':''}" onclick="${onclick}">
+    ${historical ? '<span class="historical-badge">HISTORICAL</span>' : ''}
+    <span class="claim-type-tag" style="background:${col}22;color:${col};border:1px solid ${col}44">${c.claim_type}</span>
+    <div class="claim-relation"><strong>${sub}</strong><span class="arrow">→</span>${obj}</div>
+    <div class="claim-meta">
+      <div class="conf-bar">
+        <div class="conf-track"><div class="conf-fill" style="width:${pct}%;background:${col}"></div></div>
+        ${pct}%
+      </div>
+      <span>${vf} → ${vt}</span>
+      <span>${c.evidence_ids.length} ev.</span>
+    </div>
+    ${c.notes ? `<div style="font-size:10px;color:#5a7a9a;margin-top:4px;font-family:monospace">${c.notes}</div>` : ''}
+  </div>`;
+}
+
+function showNodeDetail(n) {
+  const ent = entityMap[n.id];
+  const col = n.color;
+
+  // Claims where this entity is subject or object
+  const subjectClaims = GRAPH.claims.filter(c => c.subject_id === n.id && c.claim_type !== 'SENT_MESSAGE');
+  const objectClaims = GRAPH.claims.filter(c => c.object_id === n.id);
+
+  let html = `<div class="detail-header">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+      <div style="width:14px;height:14px;border-radius:50%;background:${col};flex-shrink:0"></div>
+      <div class="detail-title">${ent.canonical_name}</div>
+    </div>
+    <div class="detail-subtitle">${ent.entity_type}</div>`;
+
+  if (ent.aliases.length) {
+    html += `<div class="alias-list">` + ent.aliases.map(a => `<span class="alias-tag">${a}</span>`).join('') + `</div>`;
+  }
+  html += `</div>`;
+
+  if (subjectClaims.length) {
+    html += `<div class="claims-section"><div class="claims-section-title">Claims (as subject)</div>`;
+    subjectClaims.forEach(c => {
+      html += claimCard(c, `showClaimDetail(GRAPH.claims.find(x=>x.claim_id==='${c.claim_id}'))`);
+    });
+    html += `</div>`;
+  }
+
+  if (objectClaims.length) {
+    html += `<div class="claims-section"><div class="claims-section-title">Claims (as object)</div>`;
+    objectClaims.forEach(c => {
+      html += claimCard(c, `showClaimDetail(GRAPH.claims.find(x=>x.claim_id==='${c.claim_id}'))`);
+    });
+    html += `</div>`;
+  }
+
+  // Aliases / dedup info
+  if (ent.merged_from.length) {
+    html += `<div class="claims-section"><div class="claims-section-title">Merged From</div>`;
+    ent.merged_from.forEach(id => {
+      html += `<div style="font-size:11px;color:#5a7a9a;padding:4px 0">${id}</div>`;
+    });
+    html += `</div>`;
+  }
+
+  document.getElementById('tab-detail').innerHTML = html;
+}
+
+function showClaimDetail(c) {
+  if (!c) return;
+  const col = claimTypeColor(c.claim_type);
+  const sub = entityMap[c.subject_id]?.canonical_name || c.subject_id;
+  const obj = c.object_id ? (entityMap[c.object_id]?.canonical_name || c.object_id) : (c.object_value || '—');
+  const historical = !!c.superseded_by;
+
+  let html = `<div class="detail-header">
+    <span class="claim-type-tag" style="background:${col}22;color:${col};border:1px solid ${col}44;font-size:10px">${c.claim_type}</span>
+    <div class="detail-title" style="margin-top:6px">${sub} → ${obj}</div>
+    <div style="display:flex;gap:12px;margin-top:8px;font-family:monospace;font-size:10px;color:#5a7a9a">
+      <span>conf: ${Math.round(c.confidence*100)}%</span>
+      <span>from: ${c.valid_from?.slice(0,10)||'—'}</span>
+      <span>to: ${c.valid_to?.slice(0,10)||'present'}</span>
+    </div>
+    ${historical ? `<div style="margin-top:8px"><span class="historical-badge" style="position:static;display:inline-block">HISTORICAL – superseded</span></div>` : ''}
+    ${c.notes ? `<div style="margin-top:8px;font-size:11px;color:#5a7a9a;font-family:monospace">${c.notes}</div>` : ''}
+  </div>`;
+
+  html += `<div class="claims-section"><div class="claims-section-title">Evidence (${c.evidence_ids.length})</div>`;
+
+  c.evidence_ids.forEach(eid => {
+    const ev = evidenceMap[eid];
+    if (!ev) return;
+    const art = artifactMap[ev.artifact_id];
+    const from = art?.metadata?.from || '?';
+    const subj = art?.metadata?.subject || '';
+    html += `<div class="evidence-card" onclick="showArtifact('${ev.artifact_id}')">
+      <div class="evidence-source">📧 ${ev.artifact_id} · ${ev.timestamp.slice(0,10)}</div>
+      <div class="evidence-excerpt">${escHtml(ev.excerpt)}</div>
+      <div class="evidence-meta">
+        <span>From: ${from}</span>
+        <span>chars ${ev.char_start}–${ev.char_end}</span>
+      </div>
+      <div style="margin-top:6px;font-size:10px;color:#5a7a9a;font-family:monospace;cursor:pointer">→ click to open full email</div>
+    </div>`;
+  });
+
+  html += `</div>`;
+  document.getElementById('tab-detail').innerHTML = html;
+
+  // Switch to evidence tab and show artifacts
+  switchTab('evidence', document.querySelectorAll('.tab-btn')[1]);
+  showEvidencePanel(c);
+}
+
+function showEvidencePanel(c) {
+  const artIds = [...new Set(c.evidence_ids.map(eid => evidenceMap[eid]?.artifact_id).filter(Boolean))];
+  let html = `<div class="claims-section-title" style="font-family:monospace;font-size:10px;color:#5a7a9a;letter-spacing:2px;margin-bottom:12px">SOURCE EMAILS</div>`;
+
+  artIds.forEach(aid => {
+    const art = artifactMap[aid];
+    if (!art) return;
+    html += renderEmail(art);
+  });
+
+  document.getElementById('tab-evidence').innerHTML = html;
+}
+
+function showArtifact(aid) {
+  const art = artifactMap[aid];
+  if (!art) return;
+  document.getElementById('tab-evidence').innerHTML = renderEmail(art);
+  switchTab('evidence', document.querySelectorAll('.tab-btn')[1]);
+}
+
+function renderEmail(art) {
+  const m = art.metadata;
+  const toList = Array.isArray(m.to) ? m.to.join(', ') : m.to;
+  const ccList = Array.isArray(m.cc) && m.cc.length ? m.cc.join(', ') : null;
+  return `<div class="email-full">
+    <div class="email-header-row">
+      <div>
+        <div class="email-subject">${escHtml(m.subject||'(no subject)')}${art.redacted?'<span class="redacted-badge">REDACTED</span>':''}</div>
+      </div>
+      <div class="email-ts">${art.timestamp.slice(0,10)}</div>
+    </div>
+    <div class="email-field">From: <span>${escHtml(m.from||'')}</span></div>
+    <div class="email-field">To: <span>${escHtml(toList||'')}</span></div>
+    ${ccList ? `<div class="email-field">CC: <span>${escHtml(ccList)}</span></div>` : ''}
+    <div class="email-field">ID: <span>${m.message_id||art.artifact_id}</span></div>
+    <div class="email-body">${escHtml(art.content)}</div>
+  </div>`;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ════════════════════════════════════════════════════════════
+// SEARCH / RETRIEVAL
+// ════════════════════════════════════════════════════════════
+
+function tokenize(text) {
+  return new Set(text.toLowerCase().match(/[a-z0-9]+/g) || []);
+}
+
+const CLAIM_KEYWORDS_MAP = {
+  HOLDS_ROLE: new Set(['role','title','cfo','ceo','vp','holds','position','is']),
+  HELD_ROLE: new Set(['was','former','previously','held','historical','history']),
+  RESIGNED: new Set(['resign','quit','left','departure','step']),
+  HAS_REVENUE_TARGET: new Set(['revenue','target','billion','money','earnings','45b','q3']),
+  HAS_DEBT: new Set(['debt','balance','sheet','liability','off','1.2b']),
+  CONCERN_RAISED: new Set(['concern','worry','whistleblow','accounting','scandal','nervous']),
+  RESTATEMENT: new Set(['restate','restatement','sec','investigation','investigation']),
+  DECISION_REVERSED: new Set(['reversed','changed','overturned','correction','wrong']),
+  INVOLVES_STRUCTURE: new Set(['ljm','partnership','spe','structure','raptor','cayman']),
+  WORKS_AT: new Set(['works','employed','staff','employee','at']),
+};
+
+function doSearch() {
+  const q = document.getElementById('searchInput').value.trim();
+  if (!q) return;
+  const qtoks = tokenize(q);
+  const scored = [];
+
+  GRAPH.claims.forEach(c => {
+    if (c.claim_type === 'SENT_MESSAGE') return;
+    let score = 0;
+
+    // Entity name match
+    const subj = entityMap[c.subject_id];
+    const obj = c.object_id ? entityMap[c.object_id] : null;
+    [subj, obj].forEach(ent => {
+      if (!ent) return;
+      const names = [ent.canonical_name, ...ent.aliases];
+      const etoks = tokenize(names.join(' '));
+      const overlap = [...qtoks].filter(t => etoks.has(t)).length;
+      score += overlap * 0.5;
+    });
+
+    // Claim type
+    const ck = CLAIM_KEYWORDS_MAP[c.claim_type];
+    if (ck) score += [...qtoks].filter(t => ck.has(t)).length * 0.4;
+
+    // Object value
+    if (c.object_value) {
+      const ov = tokenize(c.object_value);
+      score += [...qtoks].filter(t => ov.has(t)).length * 0.3;
+    }
+
+    if (score > 0) {
+      score *= c.confidence;
+      if (c.superseded_by) score *= 0.5;
+      scored.push({ score, claim: c });
+    }
+  });
+
+  scored.sort((a,b) => b.score - a.score);
+  const top = scored.slice(0, 6);
+
+  switchTab('search', document.querySelectorAll('.tab-btn')[2]);
+
+  if (!top.length) {
+    document.getElementById('tab-search').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">◎</div>
+        <div class="empty-state-text">No matching claims found for:<br><em>"${escHtml(q)}"</em></div>
+      </div>`;
+    return;
+  }
+
+  let html = `<div style="font-family:monospace;font-size:10px;color:#5a7a9a;letter-spacing:1px;margin-bottom:12px">QUERY: "${escHtml(q)}"</div>`;
+
+  top.forEach(({ score, claim: c }, i) => {
+    const col = claimTypeColor(c.claim_type);
+    const sub = entityMap[c.subject_id]?.canonical_name || c.subject_id;
+    const obj = c.object_id ? (entityMap[c.object_id]?.canonical_name || c.object_id) : (c.object_value || '—');
+    const historical = !!c.superseded_by;
+
+    // First evidence
+    const ev = c.evidence_ids.length ? evidenceMap[c.evidence_ids[0]] : null;
+
+    html += `<div class="search-result" onclick="showClaimDetail(GRAPH.claims.find(x=>x.claim_id==='${c.claim_id}'))">
+      <div class="search-result-rank">#${i+1} · score ${score.toFixed(2)} · <span style="color:${col}">${c.claim_type}</span>${historical?' · <span style="color:#ffb347">HISTORICAL</span>':''}</div>
+      <div class="search-result-claim"><strong>${sub}</strong> → ${obj}</div>
+      ${ev ? `<div class="search-evidence-preview">${escHtml(ev.excerpt.slice(0,150))}${ev.excerpt.length>150?'…':''}</div>` : ''}
+      <div style="margin-top:6px;font-size:10px;color:#5a7a9a;font-family:monospace">
+        conf: ${Math.round(c.confidence*100)}% · ${c.evidence_ids.length} evidence(s) · click to inspect
+      </div>
+    </div>`;
+  });
+
+  document.getElementById('tab-search').innerHTML = html;
+}
+
+function quickQuery(q) {
+  document.getElementById('searchInput').value = q;
+  doSearch();
+}
+
+document.getElementById('searchInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doSearch();
+});
+
+// ════════════════════════════════════════════════════════════
+// FILTER
+// ════════════════════════════════════════════════════════════
+
+function filterByType(type, btn) {
+  filterType = type;
+  document.querySelectorAll('.filter-btn[data-type]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+  buildEntityList();
+}
+
+// ════════════════════════════════════════════════════════════
+// ENTITY LIST
+// ════════════════════════════════════════════════════════════
+
+function buildEntityList() {
+  const list = document.getElementById('entityList');
+  const filtered = filterType === 'ALL' ? GRAPH.entities : GRAPH.entities.filter(e => e.entity_type === filterType);
+
+  list.innerHTML = filtered.map(ent => {
+    const col = entityColor(ent.entity_type);
+    const claimCount = GRAPH.claims.filter(c => c.subject_id === ent.entity_id || c.object_id === ent.entity_id).length;
+    return `<div class="entity-item" onclick="selectEntityById('${ent.entity_id}')">
+      <div class="entity-dot" style="background:${col}"></div>
+      <div class="entity-name">${ent.canonical_name}</div>
+      <div class="entity-type-badge">${claimCount}c</div>
+    </div>`;
+  }).join('');
+}
+
+function selectEntityById(id) {
+  const n = nodes.find(x => x.id === id);
+  if (n) selectNode(n);
+}
+
+// ════════════════════════════════════════════════════════════
+// TABS
+// ════════════════════════════════════════════════════════════
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+// ════════════════════════════════════════════════════════════
+// STATS
+// ════════════════════════════════════════════════════════════
+
+function updateStats() {
+  document.getElementById('statEntities').textContent = GRAPH.entities.length;
+  document.getElementById('statClaims').textContent = GRAPH.claims.length;
+  document.getElementById('statEvidence').textContent = GRAPH.evidences.length;
+  document.getElementById('statSources').textContent = GRAPH.artifacts.length;
+}
+
+// ════════════════════════════════════════════════════════════
+// ANIMATION LOOP
+// ════════════════════════════════════════════════════════════
+
+let animating = true;
+
+function animate() {
+  if (!animating) return;
+  simulateStep(canvas.width || 800, canvas.height || 600);
+  render();
+  requestAnimationFrame(animate);
+}
+
+// ════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════
+
+window.addEventListener('load', () => {
+  updateStats();
+  buildEntityList();
+  initGraph();
+
+  // Run animation for 3 seconds then settle
+  animate();
+  setTimeout(() => { animating = false; render(); }, 4000);
+});
+
+window.addEventListener('resize', () => { render(); });
+</script>
+</body>
+</html>

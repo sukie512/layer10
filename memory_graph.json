@@ -1,0 +1,1043 @@
+{
+  "artifacts": [
+    {
+      "artifact_id": "msg-001",
+      "source_type": "email",
+      "timestamp": "2001-09-05T09:12:00Z",
+      "content": "Jeff, Andy,\n\nWe need to hit $45B in revenue for Q3. I've spoken with the board and they are fully behind us. Andy, please make sure the SPE structures support this. Jeff will be taking over as CFO effective October 1st.\n\nKen",
+      "metadata": {
+        "from": "kenneth.lay@enron.com",
+        "to": [
+          "jeffrey.skilling@enron.com",
+          "andrew.fastow@enron.com"
+        ],
+        "cc": [],
+        "subject": "Q3 Revenue Targets",
+        "thread_id": "thread-alpha",
+        "message_id": "<001@enron.com>"
+      },
+      "redacted": false,
+      "ingest_version": "v1.0"
+    },
+    {
+      "artifact_id": "msg-002",
+      "source_type": "email",
+      "timestamp": "2001-09-05T11:30:00Z",
+      "content": "Ken,\n\nUnderstood on the $45B target. However I want to flag that the broadband segment is tracking $2B below plan. We may need to restate.\n\nOn the CFO role \u2013 I think Andy should remain CFO; I'd rather stay as CEO. Can we revisit?\n\nJeff\n\n-----Original Message-----\nFrom: kenneth.lay@enron.com\nSent: 2001-09-05 09:12\nTo: jeffrey.skilling@enron.com; andrew.fastow@enron.com\nSubject: Q3 Revenue Targets\n\nJeff, Andy,\n\nWe need to hit $45B in revenue for Q3 ...",
+      "metadata": {
+        "from": "j.skilling@enron.com",
+        "to": [
+          "kenneth.lay@enron.com"
+        ],
+        "cc": [
+          "andrew.fastow@enron.com"
+        ],
+        "subject": "RE: Q3 Revenue Targets",
+        "thread_id": "thread-alpha",
+        "message_id": "<002@enron.com>"
+      },
+      "redacted": false,
+      "ingest_version": "v1.0"
+    },
+    {
+      "artifact_id": "msg-003",
+      "source_type": "email",
+      "timestamp": "2001-09-06T08:00:00Z",
+      "content": "Jeff \u2013 agreed. Andy stays as CFO. You remain CEO. My earlier note was wrong.\n\nKen",
+      "metadata": {
+        "from": "kenneth.lay@enron.com",
+        "to": [
+          "j.skilling@enron.com",
+          "andrew.fastow@enron.com"
+        ],
+        "cc": [],
+        "subject": "RE: RE: Q3 Revenue Targets",
+        "thread_id": "thread-alpha",
+        "message_id": "<003@enron.com>"
+      },
+      "redacted": false,
+      "ingest_version": "v1.0"
+    },
+    {
+      "artifact_id": "msg-004",
+      "source_type": "email",
+      "timestamp": "2001-10-12T14:22:00Z",
+      "content": "Sherron,\n\nThe LJM Cayman partnership will be consolidated off-balance-sheet. Legal has signed off. The structure allows us to move $1.2B of debt off the books before year-end.\n\nPlease keep this between us for now.\n\nAndy",
+      "metadata": {
+        "from": "andrew.fastow@enron.com",
+        "to": [
+          "sherron.watkins@enron.com"
+        ],
+        "cc": [],
+        "subject": "LJM Cayman \u2013 Accounting Treatment",
+        "thread_id": "thread-beta",
+        "message_id": "<004@enron.com>"
+      },
+      "redacted": false,
+      "ingest_version": "v1.0"
+    },
+    {
+      "artifact_id": "msg-005",
+      "source_type": "email",
+      "timestamp": "2001-10-15T09:05:00Z",
+      "content": "Ken,\n\nI am incredibly nervous that we will implode in a wave of accounting scandals. The LJM partnerships and Raptor vehicles look problematic. I strongly urge you to investigate the off-balance-sheet structures before it is too late.\n\nSherron Watkins\nVP Accounting",
+      "metadata": {
+        "from": "sherron.watkins@enron.com",
+        "to": [
+          "kenneth.lay@enron.com"
+        ],
+        "cc": [],
+        "subject": "Concerns about accounting",
+        "thread_id": "thread-beta",
+        "message_id": "<005@enron.com>"
+      },
+      "redacted": false,
+      "ingest_version": "v1.0"
+    },
+    {
+      "artifact_id": "msg-006",
+      "source_type": "email",
+      "timestamp": "2001-11-01T10:00:00Z",
+      "content": "Team,\n\nEnron remains in strong financial shape. Our stock is undervalued and I am buying more shares personally. The Q3 revenue came in at $44.8B, just below our $45B target but within acceptable range.\n\nKen Lay\nChairman & CEO",
+      "metadata": {
+        "from": "kenneth.lay@enron.com",
+        "to": [
+          "all.employees@enron.com"
+        ],
+        "cc": [],
+        "subject": "Company Update",
+        "thread_id": "thread-gamma",
+        "message_id": "<006@enron.com>"
+      },
+      "redacted": false,
+      "ingest_version": "v1.0"
+    },
+    {
+      "artifact_id": "msg-007",
+      "source_type": "email",
+      "timestamp": "2001-11-08T16:45:00Z",
+      "content": "Ken,\n\nWe are being forced to restate earnings going back to 1997. The SEC has opened a formal investigation. LJM structures will not survive scrutiny. We need to disclose the $1.2B debt immediately.\n\nAndy",
+      "metadata": {
+        "from": "andrew.fastow@enron.com",
+        "to": [
+          "kenneth.lay@enron.com"
+        ],
+        "cc": [],
+        "subject": "Restatement \u2013 URGENT",
+        "thread_id": "thread-gamma",
+        "message_id": "<007@enron.com>"
+      },
+      "redacted": false,
+      "ingest_version": "v1.0"
+    },
+    {
+      "artifact_id": "msg-008",
+      "source_type": "email",
+      "timestamp": "2001-10-12T14:55:00Z",
+      "content": "Richard \u2013 FYI, forwarding.\n\n---------- Forwarded message ----------\nFrom: andrew.fastow@enron.com\nTo: sherron.watkins@enron.com\nDate: 2001-10-12\nSubject: LJM Cayman \u2013 Accounting Treatment\n\nSherron,\n\nThe LJM Cayman partnership will be consolidated off-balance-sheet. Legal has signed off. The structure allows us to move $1.2B of debt off the books before year-end.\n\nPlease keep this between us for now.\n\nAndy",
+      "metadata": {
+        "from": "andrew.fastow@enron.com",
+        "to": [
+          "richard.causey@enron.com"
+        ],
+        "cc": [],
+        "subject": "FWD: LJM Cayman \u2013 Accounting Treatment",
+        "thread_id": "thread-beta",
+        "message_id": "<008@enron.com>"
+      },
+      "redacted": false,
+      "ingest_version": "v1.0"
+    },
+    {
+      "artifact_id": "msg-009",
+      "source_type": "email",
+      "timestamp": "2001-12-01T08:00:00Z",
+      "content": "[This message has been redacted under legal hold order LH-2001-044]",
+      "metadata": {
+        "from": "legal@enron.com",
+        "to": [
+          "andrew.fastow@enron.com"
+        ],
+        "cc": [],
+        "subject": "[REDACTED BY LEGAL HOLD]",
+        "thread_id": "thread-delta",
+        "message_id": "<009@enron.com>"
+      },
+      "redacted": true,
+      "ingest_version": "v1.0"
+    },
+    {
+      "artifact_id": "msg-010",
+      "source_type": "email",
+      "timestamp": "2001-08-14T07:30:00Z",
+      "content": "Ken,\n\nFor personal reasons I am resigning as CEO effective immediately. I recommend you resume the CEO title. This has nothing to do with the company's financial condition.\n\nJeff Skilling",
+      "metadata": {
+        "from": "jeffrey.skilling@enron.com",
+        "to": [
+          "kenneth.lay@enron.com"
+        ],
+        "cc": [],
+        "subject": "My Resignation",
+        "thread_id": "thread-epsilon",
+        "message_id": "<010@enron.com>"
+      },
+      "redacted": false,
+      "ingest_version": "v1.0"
+    }
+  ],
+  "entities": [
+    {
+      "entity_id": "ent-lay",
+      "entity_type": "Person",
+      "canonical_name": "Kenneth Lay",
+      "aliases": [
+        "kenneth.lay@enron.com",
+        "ken lay",
+        "ken",
+        "Chairman & CEO"
+      ],
+      "merged_from": [],
+      "metadata": {
+        "email": "kenneth.lay@enron.com"
+      },
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "entity_id": "ent-skilling",
+      "entity_type": "Person",
+      "canonical_name": "Jeffrey Skilling",
+      "aliases": [
+        "jeffrey.skilling@enron.com",
+        "j.skilling@enron.com",
+        "jeff skilling",
+        "jeff"
+      ],
+      "merged_from": [],
+      "metadata": {
+        "email": "jeffrey.skilling@enron.com"
+      },
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "entity_id": "ent-fastow",
+      "entity_type": "Person",
+      "canonical_name": "Andrew Fastow",
+      "aliases": [
+        "andrew.fastow@enron.com",
+        "andy fastow",
+        "andy"
+      ],
+      "merged_from": [],
+      "metadata": {
+        "email": "andrew.fastow@enron.com"
+      },
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "entity_id": "ent-watkins",
+      "entity_type": "Person",
+      "canonical_name": "Sherron Watkins",
+      "aliases": [
+        "sherron.watkins@enron.com",
+        "sherron watkins",
+        "VP Accounting"
+      ],
+      "merged_from": [],
+      "metadata": {
+        "email": "sherron.watkins@enron.com"
+      },
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "entity_id": "ent-causey",
+      "entity_type": "Person",
+      "canonical_name": "Richard Causey",
+      "aliases": [
+        "richard.causey@enron.com"
+      ],
+      "merged_from": [],
+      "metadata": {},
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "entity_id": "ent-enron",
+      "entity_type": "Organization",
+      "canonical_name": "Enron Corporation",
+      "aliases": [
+        "Enron",
+        "enron corp"
+      ],
+      "merged_from": [],
+      "metadata": {},
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "entity_id": "ent-ljm",
+      "entity_type": "Project",
+      "canonical_name": "LJM Cayman Partnership",
+      "aliases": [
+        "LJM",
+        "LJM Cayman",
+        "ljm cayman"
+      ],
+      "merged_from": [],
+      "metadata": {},
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "entity_id": "ent-raptor",
+      "entity_type": "Project",
+      "canonical_name": "Raptor SPE",
+      "aliases": [
+        "Raptor",
+        "raptor vehicles",
+        "SPE"
+      ],
+      "merged_from": [],
+      "metadata": {},
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "entity_id": "ent-role-ceo",
+      "entity_type": "Role",
+      "canonical_name": "CEO",
+      "aliases": [
+        "Chief Executive Officer"
+      ],
+      "merged_from": [],
+      "metadata": {},
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "entity_id": "ent-role-cfo",
+      "entity_type": "Role",
+      "canonical_name": "CFO",
+      "aliases": [
+        "Chief Financial Officer"
+      ],
+      "merged_from": [],
+      "metadata": {},
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "entity_id": "ent-role-vp-acct",
+      "entity_type": "Role",
+      "canonical_name": "VP Accounting",
+      "aliases": [
+        "VP Accounting"
+      ],
+      "merged_from": [],
+      "metadata": {},
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "entity_id": "ent-q3-target",
+      "entity_type": "FinancialItem",
+      "canonical_name": "Q3 Revenue Target $45B",
+      "aliases": [
+        "$45B",
+        "45B revenue target"
+      ],
+      "merged_from": [],
+      "metadata": {
+        "amount": "45000000000",
+        "currency": "USD"
+      },
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "entity_id": "ent-ljm-debt",
+      "entity_type": "FinancialItem",
+      "canonical_name": "LJM Off-Balance-Sheet Debt $1.2B",
+      "aliases": [
+        "$1.2B debt",
+        "1.2B"
+      ],
+      "merged_from": [],
+      "metadata": {
+        "amount": "1200000000",
+        "currency": "USD"
+      },
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "entity_id": "ent-evt-resignation",
+      "entity_type": "Event",
+      "canonical_name": "Skilling Resignation Aug 2001",
+      "aliases": [
+        "resignation",
+        "Skilling resigned"
+      ],
+      "merged_from": [],
+      "metadata": {
+        "date": "2001-08-14"
+      },
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "entity_id": "ent-evt-restatement",
+      "entity_type": "Event",
+      "canonical_name": "Enron Earnings Restatement Nov 2001",
+      "aliases": [
+        "restatement",
+        "earnings restatement"
+      ],
+      "merged_from": [],
+      "metadata": {
+        "date": "2001-11-08"
+      },
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "entity_id": "ent-legal-dept",
+      "entity_type": "Organization",
+      "canonical_name": "Enron Legal Department",
+      "aliases": [
+        "legal@enron.com",
+        "Legal"
+      ],
+      "merged_from": [],
+      "metadata": {},
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "entity_id": "ent-all-employees",
+      "entity_type": "Organization",
+      "canonical_name": "All Enron Employees",
+      "aliases": [
+        "all.employees@enron.com"
+      ],
+      "merged_from": [],
+      "metadata": {},
+      "created_at": "",
+      "updated_at": ""
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "clm-4f1c60d2",
+      "claim_type": "SENT_MESSAGE",
+      "subject_id": "ent-lay",
+      "object_id": null,
+      "object_value": "msg-001",
+      "evidence_ids": [
+        "ev-41ab5a90"
+      ],
+      "confidence": 0.95,
+      "valid_from": "2001-09-05T09:12:00Z",
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.764903Z",
+      "notes": ""
+    },
+    {
+      "claim_id": "clm-5cf65c02",
+      "claim_type": "HELD_ROLE",
+      "subject_id": "ent-skilling",
+      "object_id": "ent-role-cfo",
+      "object_value": null,
+      "evidence_ids": [
+        "ev-012b6e62"
+      ],
+      "confidence": 0.85,
+      "valid_from": "2001-10-01",
+      "valid_to": "2001-09-06",
+      "superseded_by": "clm-cf911b1d",
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.764961Z",
+      "notes": "Later reversed in msg-003"
+    },
+    {
+      "claim_id": "clm-6bd84ea3",
+      "claim_type": "HAS_REVENUE_TARGET",
+      "subject_id": "ent-enron",
+      "object_id": "ent-q3-target",
+      "object_value": "$45,000,000,000",
+      "evidence_ids": [
+        "ev-b3db2912",
+        "ev-fa4076d1",
+        "ev-004a6f4e"
+      ],
+      "confidence": 0.9,
+      "valid_from": "2001-09-05",
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.764993Z",
+      "notes": ""
+    },
+    {
+      "claim_id": "clm-2f6c0722",
+      "claim_type": "SENT_MESSAGE",
+      "subject_id": "ent-skilling",
+      "object_id": null,
+      "object_value": "msg-002",
+      "evidence_ids": [
+        "ev-8f92edc8"
+      ],
+      "confidence": 0.95,
+      "valid_from": "2001-09-05T11:30:00Z",
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.765069Z",
+      "notes": ""
+    },
+    {
+      "claim_id": "clm-6fec5748",
+      "claim_type": "SENT_MESSAGE",
+      "subject_id": "ent-lay",
+      "object_id": null,
+      "object_value": "msg-003",
+      "evidence_ids": [
+        "ev-929e2ade"
+      ],
+      "confidence": 0.95,
+      "valid_from": "2001-09-06T08:00:00Z",
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.765143Z",
+      "notes": ""
+    },
+    {
+      "claim_id": "clm-341c0100",
+      "claim_type": "HOLDS_ROLE",
+      "subject_id": "ent-fastow",
+      "object_id": "ent-role-cfo",
+      "object_value": null,
+      "evidence_ids": [
+        "ev-414beb5a"
+      ],
+      "confidence": 0.92,
+      "valid_from": "2001-09-06",
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.765181Z",
+      "notes": ""
+    },
+    {
+      "claim_id": "clm-cf911b1d",
+      "claim_type": "DECISION_REVERSED",
+      "subject_id": "ent-lay",
+      "object_id": null,
+      "object_value": "CFO assignment of Skilling",
+      "evidence_ids": [
+        "ev-75d1cda8"
+      ],
+      "confidence": 0.88,
+      "valid_from": "2001-09-06",
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.765207Z",
+      "notes": ""
+    },
+    {
+      "claim_id": "clm-2a6ada42",
+      "claim_type": "SENT_MESSAGE",
+      "subject_id": "ent-fastow",
+      "object_id": null,
+      "object_value": "msg-004",
+      "evidence_ids": [
+        "ev-39f03062"
+      ],
+      "confidence": 0.95,
+      "valid_from": "2001-10-12T14:22:00Z",
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.765272Z",
+      "notes": ""
+    },
+    {
+      "claim_id": "clm-fe8e22cd",
+      "claim_type": "HAS_DEBT",
+      "subject_id": "ent-enron",
+      "object_id": "ent-ljm-debt",
+      "object_value": "$1,200,000,000",
+      "evidence_ids": [
+        "ev-fee34c7a",
+        "ev-5c28a128",
+        "ev-6259a52c"
+      ],
+      "confidence": 0.88,
+      "valid_from": "2001-10-12",
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.765294Z",
+      "notes": "Off-balance-sheet via LJM Cayman structure"
+    },
+    {
+      "claim_id": "clm-c2c0ed26",
+      "claim_type": "INVOLVES_STRUCTURE",
+      "subject_id": "ent-enron",
+      "object_id": "ent-ljm",
+      "object_value": null,
+      "evidence_ids": [
+        "ev-69acca3d",
+        "ev-42eafb95",
+        "ev-8b1fe2cb",
+        "ev-c4a51369"
+      ],
+      "confidence": 0.85,
+      "valid_from": "2001-10-12",
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.765313Z",
+      "notes": ""
+    },
+    {
+      "claim_id": "clm-269a2733",
+      "claim_type": "SENT_MESSAGE",
+      "subject_id": "ent-watkins",
+      "object_id": null,
+      "object_value": "msg-005",
+      "evidence_ids": [
+        "ev-f2fb148b"
+      ],
+      "confidence": 0.95,
+      "valid_from": "2001-10-15T09:05:00Z",
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.765373Z",
+      "notes": ""
+    },
+    {
+      "claim_id": "clm-8c4390c1",
+      "claim_type": "CONCERN_RAISED",
+      "subject_id": "ent-watkins",
+      "object_id": "ent-enron",
+      "object_value": "Accounting irregularities",
+      "evidence_ids": [
+        "ev-4a2006ed"
+      ],
+      "confidence": 0.95,
+      "valid_from": "2001-10-15",
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.765416Z",
+      "notes": ""
+    },
+    {
+      "claim_id": "clm-af6116dd",
+      "claim_type": "WORKS_AT",
+      "subject_id": "ent-watkins",
+      "object_id": "ent-enron",
+      "object_value": null,
+      "evidence_ids": [
+        "ev-7ca9e872"
+      ],
+      "confidence": 0.95,
+      "valid_from": null,
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.765437Z",
+      "notes": ""
+    },
+    {
+      "claim_id": "clm-3f164196",
+      "claim_type": "HOLDS_ROLE",
+      "subject_id": "ent-watkins",
+      "object_id": "ent-role-vp-acct",
+      "object_value": null,
+      "evidence_ids": [
+        "ev-cade499b"
+      ],
+      "confidence": 0.95,
+      "valid_from": null,
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.765456Z",
+      "notes": ""
+    },
+    {
+      "claim_id": "clm-dc1e966f",
+      "claim_type": "SENT_MESSAGE",
+      "subject_id": "ent-lay",
+      "object_id": null,
+      "object_value": "msg-006",
+      "evidence_ids": [
+        "ev-2d721e58"
+      ],
+      "confidence": 0.95,
+      "valid_from": "2001-11-01T10:00:00Z",
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.765499Z",
+      "notes": ""
+    },
+    {
+      "claim_id": "clm-36ca1807",
+      "claim_type": "HOLDS_ROLE",
+      "subject_id": "ent-lay",
+      "object_id": "ent-role-ceo",
+      "object_value": null,
+      "evidence_ids": [
+        "ev-a62ef5e2",
+        "ev-2c60f331",
+        "ev-0e0c7909"
+      ],
+      "confidence": 0.9,
+      "valid_from": "2001-09-01",
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.765519Z",
+      "notes": ""
+    },
+    {
+      "claim_id": "clm-5c0e6fa1",
+      "claim_type": "SENT_MESSAGE",
+      "subject_id": "ent-fastow",
+      "object_id": null,
+      "object_value": "msg-007",
+      "evidence_ids": [
+        "ev-de46fd14"
+      ],
+      "confidence": 0.95,
+      "valid_from": "2001-11-08T16:45:00Z",
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.765574Z",
+      "notes": ""
+    },
+    {
+      "claim_id": "clm-60bc6a04",
+      "claim_type": "RESTATEMENT",
+      "subject_id": "ent-enron",
+      "object_id": "ent-evt-restatement",
+      "object_value": null,
+      "evidence_ids": [
+        "ev-c4c3d436"
+      ],
+      "confidence": 0.97,
+      "valid_from": "2001-11-08",
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.765659Z",
+      "notes": ""
+    },
+    {
+      "claim_id": "clm-bae2fd32",
+      "claim_type": "SENT_MESSAGE",
+      "subject_id": "ent-fastow",
+      "object_id": null,
+      "object_value": "msg-008",
+      "evidence_ids": [
+        "ev-98bd9dc7"
+      ],
+      "confidence": 0.95,
+      "valid_from": "2001-10-12T14:55:00Z",
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.765899Z",
+      "notes": ""
+    },
+    {
+      "claim_id": "clm-bde6059e",
+      "claim_type": "SENT_MESSAGE",
+      "subject_id": "ent-skilling",
+      "object_id": null,
+      "object_value": "msg-010",
+      "evidence_ids": [
+        "ev-5938183e"
+      ],
+      "confidence": 0.95,
+      "valid_from": "2001-08-14T07:30:00Z",
+      "valid_to": null,
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.766099Z",
+      "notes": ""
+    },
+    {
+      "claim_id": "clm-86fe6d72",
+      "claim_type": "RESIGNED",
+      "subject_id": "ent-skilling",
+      "object_id": "ent-role-ceo",
+      "object_value": null,
+      "evidence_ids": [
+        "ev-e72cba01"
+      ],
+      "confidence": 0.97,
+      "valid_from": "2001-08-14",
+      "valid_to": "2001-08-14",
+      "superseded_by": null,
+      "extraction_version": "v1.0",
+      "extracted_at": "2026-03-06T21:10:51.766124Z",
+      "notes": ""
+    }
+  ],
+  "evidences": [
+    {
+      "evidence_id": "ev-41ab5a90",
+      "artifact_id": "msg-001",
+      "excerpt": "Jeff, Andy,\n\nWe need to hit $45B in revenue for Q3. I've spoken with the board and they are fully behind us. Andy, please make sure the SPE structures support this. Jeff will be taking over as CFO eff",
+      "char_start": 0,
+      "char_end": 200,
+      "timestamp": "2001-09-05T09:12:00Z"
+    },
+    {
+      "evidence_id": "ev-012b6e62",
+      "artifact_id": "msg-001",
+      "excerpt": "Jeff will be taking over as CFO effective October 1st.",
+      "char_start": 165,
+      "char_end": 219,
+      "timestamp": "2001-09-05T09:12:00Z"
+    },
+    {
+      "evidence_id": "ev-b3db2912",
+      "artifact_id": "msg-001",
+      "excerpt": "We need to hit $45B in revenue for Q3",
+      "char_start": 13,
+      "char_end": 50,
+      "timestamp": "2001-09-05T09:12:00Z"
+    },
+    {
+      "evidence_id": "ev-8f92edc8",
+      "artifact_id": "msg-002",
+      "excerpt": "Ken,\n\nUnderstood on the $45B target. However I want to flag that the broadband segment is tracking $2B below plan. We may need to restate.\n\nOn the CFO role \u2013 I think Andy should remain CFO; I'd rather",
+      "char_start": 0,
+      "char_end": 200,
+      "timestamp": "2001-09-05T11:30:00Z"
+    },
+    {
+      "evidence_id": "ev-fa4076d1",
+      "artifact_id": "msg-002",
+      "excerpt": "We need to hit $45B in revenue for Q3",
+      "char_start": 413,
+      "char_end": 450,
+      "timestamp": "2001-09-05T11:30:00Z"
+    },
+    {
+      "evidence_id": "ev-929e2ade",
+      "artifact_id": "msg-003",
+      "excerpt": "Jeff \u2013 agreed. Andy stays as CFO. You remain CEO. My earlier note was wrong.\n\nKen",
+      "char_start": 0,
+      "char_end": 81,
+      "timestamp": "2001-09-06T08:00:00Z"
+    },
+    {
+      "evidence_id": "ev-414beb5a",
+      "artifact_id": "msg-003",
+      "excerpt": "Andy stays as CFO.",
+      "char_start": 15,
+      "char_end": 33,
+      "timestamp": "2001-09-06T08:00:00Z"
+    },
+    {
+      "evidence_id": "ev-75d1cda8",
+      "artifact_id": "msg-003",
+      "excerpt": "Andy stays as CFO.",
+      "char_start": 15,
+      "char_end": 33,
+      "timestamp": "2001-09-06T08:00:00Z"
+    },
+    {
+      "evidence_id": "ev-39f03062",
+      "artifact_id": "msg-004",
+      "excerpt": "Sherron,\n\nThe LJM Cayman partnership will be consolidated off-balance-sheet. Legal has signed off. The structure allows us to move $1.2B of debt off the books before year-end.\n\nPlease keep this betwee",
+      "char_start": 0,
+      "char_end": 200,
+      "timestamp": "2001-10-12T14:22:00Z"
+    },
+    {
+      "evidence_id": "ev-6259a52c",
+      "artifact_id": "msg-004",
+      "excerpt": "The structure allows us to move $1.2B of debt off the books before year-end.",
+      "char_start": 99,
+      "char_end": 175,
+      "timestamp": "2001-10-12T14:22:00Z"
+    },
+    {
+      "evidence_id": "ev-69acca3d",
+      "artifact_id": "msg-004",
+      "excerpt": "LJM Cayman partnership",
+      "char_start": 14,
+      "char_end": 36,
+      "timestamp": "2001-10-12T14:22:00Z"
+    },
+    {
+      "evidence_id": "ev-f2fb148b",
+      "artifact_id": "msg-005",
+      "excerpt": "Ken,\n\nI am incredibly nervous that we will implode in a wave of accounting scandals. The LJM partnerships and Raptor vehicles look problematic. I strongly urge you to investigate the off-balance-sheet",
+      "char_start": 0,
+      "char_end": 200,
+      "timestamp": "2001-10-15T09:05:00Z"
+    },
+    {
+      "evidence_id": "ev-8b1fe2cb",
+      "artifact_id": "msg-005",
+      "excerpt": "LJM",
+      "char_start": 89,
+      "char_end": 92,
+      "timestamp": "2001-10-15T09:05:00Z"
+    },
+    {
+      "evidence_id": "ev-4a2006ed",
+      "artifact_id": "msg-005",
+      "excerpt": "I am incredibly nervous that we will implode in a wave of accounting scandals.",
+      "char_start": 6,
+      "char_end": 84,
+      "timestamp": "2001-10-15T09:05:00Z"
+    },
+    {
+      "evidence_id": "ev-7ca9e872",
+      "artifact_id": "msg-005",
+      "excerpt": "Sherron Watkins\nVP Accounting",
+      "char_start": 236,
+      "char_end": 265,
+      "timestamp": "2001-10-15T09:05:00Z"
+    },
+    {
+      "evidence_id": "ev-cade499b",
+      "artifact_id": "msg-005",
+      "excerpt": "VP Accounting",
+      "char_start": 252,
+      "char_end": 265,
+      "timestamp": "2001-10-15T09:05:00Z"
+    },
+    {
+      "evidence_id": "ev-2d721e58",
+      "artifact_id": "msg-006",
+      "excerpt": "Team,\n\nEnron remains in strong financial shape. Our stock is undervalued and I am buying more shares personally. The Q3 revenue came in at $44.8B, just below our $45B target but within acceptable rang",
+      "char_start": 0,
+      "char_end": 200,
+      "timestamp": "2001-11-01T10:00:00Z"
+    },
+    {
+      "evidence_id": "ev-0e0c7909",
+      "artifact_id": "msg-006",
+      "excerpt": "Ken Lay\nChairman & CEO",
+      "char_start": 204,
+      "char_end": 226,
+      "timestamp": "2001-11-01T10:00:00Z"
+    },
+    {
+      "evidence_id": "ev-004a6f4e",
+      "artifact_id": "msg-006",
+      "excerpt": "Team,\n\nEnron remains in strong financial shape. Our stock is undervalued and I am buying more shares personally. The Q3 ",
+      "char_start": 0,
+      "char_end": 120,
+      "timestamp": "2001-11-01T10:00:00Z"
+    },
+    {
+      "evidence_id": "ev-de46fd14",
+      "artifact_id": "msg-007",
+      "excerpt": "Ken,\n\nWe are being forced to restate earnings going back to 1997. The SEC has opened a formal investigation. LJM structures will not survive scrutiny. We need to disclose the $1.2B debt immediately.\n\n",
+      "char_start": 0,
+      "char_end": 200,
+      "timestamp": "2001-11-08T16:45:00Z"
+    },
+    {
+      "evidence_id": "ev-5c28a128",
+      "artifact_id": "msg-007",
+      "excerpt": "Ken,\n\nWe are being forced to restate earnings going back to 1997. The SEC has opened a formal investigation. LJM structures will not survive scrutiny. We need to disclose the $1.2B debt immediately.\n\n",
+      "char_start": 0,
+      "char_end": 200,
+      "timestamp": "2001-11-08T16:45:00Z"
+    },
+    {
+      "evidence_id": "ev-c4a51369",
+      "artifact_id": "msg-007",
+      "excerpt": "LJM",
+      "char_start": 109,
+      "char_end": 112,
+      "timestamp": "2001-11-08T16:45:00Z"
+    },
+    {
+      "evidence_id": "ev-c4c3d436",
+      "artifact_id": "msg-007",
+      "excerpt": "We are being forced to restate earnings going back to 1997.",
+      "char_start": 6,
+      "char_end": 65,
+      "timestamp": "2001-11-08T16:45:00Z"
+    },
+    {
+      "evidence_id": "ev-98bd9dc7",
+      "artifact_id": "msg-008",
+      "excerpt": "From: andrew.fastow@enron.com",
+      "char_start": 68,
+      "char_end": 97,
+      "timestamp": "2001-10-12T14:55:00Z"
+    },
+    {
+      "evidence_id": "ev-fee34c7a",
+      "artifact_id": "msg-008",
+      "excerpt": "The structure allows us to move $1.2B of debt off the books before year-end.",
+      "char_start": 288,
+      "char_end": 364,
+      "timestamp": "2001-10-12T14:55:00Z"
+    },
+    {
+      "evidence_id": "ev-42eafb95",
+      "artifact_id": "msg-008",
+      "excerpt": "LJM Cayman partnership",
+      "char_start": 203,
+      "char_end": 225,
+      "timestamp": "2001-10-12T14:55:00Z"
+    },
+    {
+      "evidence_id": "ev-5938183e",
+      "artifact_id": "msg-010",
+      "excerpt": "Ken,\n\nFor personal reasons I am resigning as CEO effective immediately. I recommend you resume the CEO title. This has nothing to do with the company's financial condition.\n\nJeff Skilling",
+      "char_start": 0,
+      "char_end": 187,
+      "timestamp": "2001-08-14T07:30:00Z"
+    },
+    {
+      "evidence_id": "ev-e72cba01",
+      "artifact_id": "msg-010",
+      "excerpt": "I am resigning as CEO effective immediately.",
+      "char_start": 27,
+      "char_end": 71,
+      "timestamp": "2001-08-14T07:30:00Z"
+    },
+    {
+      "evidence_id": "ev-a62ef5e2",
+      "artifact_id": "msg-010",
+      "excerpt": "I am resigning as CEO effective immediately.",
+      "char_start": 27,
+      "char_end": 71,
+      "timestamp": "2001-08-14T07:30:00Z"
+    },
+    {
+      "evidence_id": "ev-2c60f331",
+      "artifact_id": "msg-010",
+      "excerpt": "resume the CEO title",
+      "char_start": 88,
+      "char_end": 108,
+      "timestamp": "2001-08-14T07:30:00Z"
+    }
+  ],
+  "dup_map": {}
+}

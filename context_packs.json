@@ -1,0 +1,762 @@
+[
+  {
+    "question": "Who was CFO of Enron?",
+    "matched_entities": [
+      "Kenneth Lay",
+      "Jeffrey Skilling",
+      "Andrew Fastow",
+      "Sherron Watkins",
+      "Richard Causey",
+      "Enron Corporation",
+      "CFO",
+      "Enron Earnings Restatement Nov 2001",
+      "Enron Legal Department",
+      "All Enron Employees"
+    ],
+    "results": [
+      {
+        "claim_id": "clm-341c0100",
+        "claim_type": "HOLDS_ROLE",
+        "subject": "Andrew Fastow",
+        "object": "CFO",
+        "confidence": 0.92,
+        "valid_from": "2001-09-06",
+        "valid_to": null,
+        "superseded_by": null,
+        "score": 0.832,
+        "reasons": [
+          "subject matches query",
+          "object matches query",
+          "claim type 'HOLDS_ROLE' matches"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ev-414beb5a",
+            "artifact_id": "msg-003",
+            "excerpt": "Andy stays as CFO.",
+            "timestamp": "2001-09-06T08:00:00Z",
+            "source_metadata": {
+              "from": "kenneth.lay@enron.com",
+              "to": [
+                "j.skilling@enron.com",
+                "andrew.fastow@enron.com"
+              ],
+              "cc": [],
+              "subject": "RE: RE: Q3 Revenue Targets",
+              "thread_id": "thread-alpha",
+              "message_id": "<003@enron.com>"
+            }
+          }
+        ]
+      },
+      {
+        "claim_id": "clm-60bc6a04",
+        "claim_type": "RESTATEMENT",
+        "subject": "Enron Corporation",
+        "object": "Enron Earnings Restatement Nov 2001",
+        "confidence": 0.97,
+        "valid_from": "2001-11-08",
+        "valid_to": null,
+        "superseded_by": null,
+        "score": 0.649,
+        "reasons": [
+          "subject matches query",
+          "object matches query"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ev-c4c3d436",
+            "artifact_id": "msg-007",
+            "excerpt": "We are being forced to restate earnings going back to 1997.",
+            "timestamp": "2001-11-08T16:45:00Z",
+            "source_metadata": {
+              "from": "andrew.fastow@enron.com",
+              "to": [
+                "kenneth.lay@enron.com"
+              ],
+              "cc": [],
+              "subject": "Restatement \u2013 URGENT",
+              "thread_id": "thread-gamma",
+              "message_id": "<007@enron.com>"
+            }
+          }
+        ]
+      },
+      {
+        "claim_id": "clm-8c4390c1",
+        "claim_type": "CONCERN_RAISED",
+        "subject": "Sherron Watkins",
+        "object": "Enron Corporation",
+        "confidence": 0.95,
+        "valid_from": "2001-10-15",
+        "valid_to": null,
+        "superseded_by": null,
+        "score": 0.622,
+        "reasons": [
+          "subject matches query",
+          "object matches query"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ev-4a2006ed",
+            "artifact_id": "msg-005",
+            "excerpt": "I am incredibly nervous that we will implode in a wave of accounting scandals.",
+            "timestamp": "2001-10-15T09:05:00Z",
+            "source_metadata": {
+              "from": "sherron.watkins@enron.com",
+              "to": [
+                "kenneth.lay@enron.com"
+              ],
+              "cc": [],
+              "subject": "Concerns about accounting",
+              "thread_id": "thread-beta",
+              "message_id": "<005@enron.com>"
+            }
+          }
+        ]
+      },
+      {
+        "claim_id": "clm-af6116dd",
+        "claim_type": "WORKS_AT",
+        "subject": "Sherron Watkins",
+        "object": "Enron Corporation",
+        "confidence": 0.95,
+        "valid_from": null,
+        "valid_to": null,
+        "superseded_by": null,
+        "score": 0.622,
+        "reasons": [
+          "subject matches query",
+          "object matches query"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ev-7ca9e872",
+            "artifact_id": "msg-005",
+            "excerpt": "Sherron Watkins\nVP Accounting",
+            "timestamp": "2001-10-15T09:05:00Z",
+            "source_metadata": {
+              "from": "sherron.watkins@enron.com",
+              "to": [
+                "kenneth.lay@enron.com"
+              ],
+              "cc": [],
+              "subject": "Concerns about accounting",
+              "thread_id": "thread-beta",
+              "message_id": "<005@enron.com>"
+            }
+          }
+        ]
+      },
+      {
+        "claim_id": "clm-3f164196",
+        "claim_type": "HOLDS_ROLE",
+        "subject": "Sherron Watkins",
+        "object": "VP Accounting",
+        "confidence": 0.95,
+        "valid_from": null,
+        "valid_to": null,
+        "superseded_by": null,
+        "score": 0.622,
+        "reasons": [
+          "subject matches query",
+          "claim type 'HOLDS_ROLE' matches"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ev-cade499b",
+            "artifact_id": "msg-005",
+            "excerpt": "VP Accounting",
+            "timestamp": "2001-10-15T09:05:00Z",
+            "source_metadata": {
+              "from": "sherron.watkins@enron.com",
+              "to": [
+                "kenneth.lay@enron.com"
+              ],
+              "cc": [],
+              "subject": "Concerns about accounting",
+              "thread_id": "thread-beta",
+              "message_id": "<005@enron.com>"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "question": "Did Skilling resign?",
+    "matched_entities": [
+      "Jeffrey Skilling",
+      "Skilling Resignation Aug 2001"
+    ],
+    "results": [
+      {
+        "claim_id": "clm-86fe6d72",
+        "claim_type": "RESIGNED",
+        "subject": "Jeffrey Skilling",
+        "object": "CEO",
+        "confidence": 0.97,
+        "valid_from": "2001-08-14",
+        "valid_to": "2001-08-14",
+        "superseded_by": null,
+        "score": 0.601,
+        "reasons": [
+          "subject matches query",
+          "claim type 'RESIGNED' matches"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ev-e72cba01",
+            "artifact_id": "msg-010",
+            "excerpt": "I am resigning as CEO effective immediately.",
+            "timestamp": "2001-08-14T07:30:00Z",
+            "source_metadata": {
+              "from": "jeffrey.skilling@enron.com",
+              "to": [
+                "kenneth.lay@enron.com"
+              ],
+              "cc": [],
+              "subject": "My Resignation",
+              "thread_id": "thread-epsilon",
+              "message_id": "<010@enron.com>"
+            }
+          }
+        ]
+      },
+      {
+        "claim_id": "clm-2f6c0722",
+        "claim_type": "SENT_MESSAGE",
+        "subject": "Jeffrey Skilling",
+        "object": "msg-002",
+        "confidence": 0.95,
+        "valid_from": "2001-09-05T11:30:00Z",
+        "valid_to": null,
+        "superseded_by": null,
+        "score": 0.343,
+        "reasons": [
+          "subject matches query"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ev-8f92edc8",
+            "artifact_id": "msg-002",
+            "excerpt": "Ken,\n\nUnderstood on the $45B target. However I want to flag that the broadband segment is tracking $2B below plan. We may need to restate.\n\nOn the CFO role \u2013 I think Andy should remain CFO; I'd rather",
+            "timestamp": "2001-09-05T11:30:00Z",
+            "source_metadata": {
+              "from": "j.skilling@enron.com",
+              "to": [
+                "kenneth.lay@enron.com"
+              ],
+              "cc": [
+                "andrew.fastow@enron.com"
+              ],
+              "subject": "RE: Q3 Revenue Targets",
+              "thread_id": "thread-alpha",
+              "message_id": "<002@enron.com>"
+            }
+          }
+        ]
+      },
+      {
+        "claim_id": "clm-bde6059e",
+        "claim_type": "SENT_MESSAGE",
+        "subject": "Jeffrey Skilling",
+        "object": "msg-010",
+        "confidence": 0.95,
+        "valid_from": "2001-08-14T07:30:00Z",
+        "valid_to": null,
+        "superseded_by": null,
+        "score": 0.336,
+        "reasons": [
+          "subject matches query"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ev-5938183e",
+            "artifact_id": "msg-010",
+            "excerpt": "Ken,\n\nFor personal reasons I am resigning as CEO effective immediately. I recommend you resume the CEO title. This has nothing to do with the company's financial condition.\n\nJeff Skilling",
+            "timestamp": "2001-08-14T07:30:00Z",
+            "source_metadata": {
+              "from": "jeffrey.skilling@enron.com",
+              "to": [
+                "kenneth.lay@enron.com"
+              ],
+              "cc": [],
+              "subject": "My Resignation",
+              "thread_id": "thread-epsilon",
+              "message_id": "<010@enron.com>"
+            }
+          }
+        ]
+      },
+      {
+        "claim_id": "clm-cf911b1d",
+        "claim_type": "DECISION_REVERSED",
+        "subject": "Kenneth Lay",
+        "object": "CFO assignment of Skilling",
+        "confidence": 0.88,
+        "valid_from": "2001-09-06",
+        "valid_to": null,
+        "superseded_by": null,
+        "score": 0.159,
+        "reasons": [
+          "object value matches"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ev-75d1cda8",
+            "artifact_id": "msg-003",
+            "excerpt": "Andy stays as CFO.",
+            "timestamp": "2001-09-06T08:00:00Z",
+            "source_metadata": {
+              "from": "kenneth.lay@enron.com",
+              "to": [
+                "j.skilling@enron.com",
+                "andrew.fastow@enron.com"
+              ],
+              "cc": [],
+              "subject": "RE: RE: Q3 Revenue Targets",
+              "thread_id": "thread-alpha",
+              "message_id": "<003@enron.com>"
+            }
+          }
+        ]
+      },
+      {
+        "claim_id": "clm-5cf65c02",
+        "claim_type": "HELD_ROLE",
+        "subject": "Jeffrey Skilling",
+        "object": "CFO",
+        "confidence": 0.85,
+        "valid_from": "2001-10-01",
+        "valid_to": "2001-09-06",
+        "superseded_by": "clm-cf911b1d",
+        "score": 0.157,
+        "reasons": [
+          "subject matches query",
+          "(historical \u2013 superseded)"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ev-012b6e62",
+            "artifact_id": "msg-001",
+            "excerpt": "Jeff will be taking over as CFO effective October 1st.",
+            "timestamp": "2001-09-05T09:12:00Z",
+            "source_metadata": {
+              "from": "kenneth.lay@enron.com",
+              "to": [
+                "jeffrey.skilling@enron.com",
+                "andrew.fastow@enron.com"
+              ],
+              "cc": [],
+              "subject": "Q3 Revenue Targets",
+              "thread_id": "thread-alpha",
+              "message_id": "<001@enron.com>"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "question": "What concerns did Sherron Watkins raise?",
+    "matched_entities": [
+      "Sherron Watkins"
+    ],
+    "results": [
+      {
+        "claim_id": "clm-269a2733",
+        "claim_type": "SENT_MESSAGE",
+        "subject": "Sherron Watkins",
+        "object": "msg-005",
+        "confidence": 0.95,
+        "valid_from": "2001-10-15T09:05:00Z",
+        "valid_to": null,
+        "superseded_by": null,
+        "score": 0.711,
+        "reasons": [
+          "subject matches query"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ev-f2fb148b",
+            "artifact_id": "msg-005",
+            "excerpt": "Ken,\n\nI am incredibly nervous that we will implode in a wave of accounting scandals. The LJM partnerships and Raptor vehicles look problematic. I strongly urge you to investigate the off-balance-sheet",
+            "timestamp": "2001-10-15T09:05:00Z",
+            "source_metadata": {
+              "from": "sherron.watkins@enron.com",
+              "to": [
+                "kenneth.lay@enron.com"
+              ],
+              "cc": [],
+              "subject": "Concerns about accounting",
+              "thread_id": "thread-beta",
+              "message_id": "<005@enron.com>"
+            }
+          }
+        ]
+      },
+      {
+        "claim_id": "clm-8c4390c1",
+        "claim_type": "CONCERN_RAISED",
+        "subject": "Sherron Watkins",
+        "object": "Enron Corporation",
+        "confidence": 0.95,
+        "valid_from": "2001-10-15",
+        "valid_to": null,
+        "superseded_by": null,
+        "score": 0.711,
+        "reasons": [
+          "subject matches query"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ev-4a2006ed",
+            "artifact_id": "msg-005",
+            "excerpt": "I am incredibly nervous that we will implode in a wave of accounting scandals.",
+            "timestamp": "2001-10-15T09:05:00Z",
+            "source_metadata": {
+              "from": "sherron.watkins@enron.com",
+              "to": [
+                "kenneth.lay@enron.com"
+              ],
+              "cc": [],
+              "subject": "Concerns about accounting",
+              "thread_id": "thread-beta",
+              "message_id": "<005@enron.com>"
+            }
+          }
+        ]
+      },
+      {
+        "claim_id": "clm-af6116dd",
+        "claim_type": "WORKS_AT",
+        "subject": "Sherron Watkins",
+        "object": "Enron Corporation",
+        "confidence": 0.95,
+        "valid_from": null,
+        "valid_to": null,
+        "superseded_by": null,
+        "score": 0.711,
+        "reasons": [
+          "subject matches query"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ev-7ca9e872",
+            "artifact_id": "msg-005",
+            "excerpt": "Sherron Watkins\nVP Accounting",
+            "timestamp": "2001-10-15T09:05:00Z",
+            "source_metadata": {
+              "from": "sherron.watkins@enron.com",
+              "to": [
+                "kenneth.lay@enron.com"
+              ],
+              "cc": [],
+              "subject": "Concerns about accounting",
+              "thread_id": "thread-beta",
+              "message_id": "<005@enron.com>"
+            }
+          }
+        ]
+      },
+      {
+        "claim_id": "clm-3f164196",
+        "claim_type": "HOLDS_ROLE",
+        "subject": "Sherron Watkins",
+        "object": "VP Accounting",
+        "confidence": 0.95,
+        "valid_from": null,
+        "valid_to": null,
+        "superseded_by": null,
+        "score": 0.711,
+        "reasons": [
+          "subject matches query"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ev-cade499b",
+            "artifact_id": "msg-005",
+            "excerpt": "VP Accounting",
+            "timestamp": "2001-10-15T09:05:00Z",
+            "source_metadata": {
+              "from": "sherron.watkins@enron.com",
+              "to": [
+                "kenneth.lay@enron.com"
+              ],
+              "cc": [],
+              "subject": "Concerns about accounting",
+              "thread_id": "thread-beta",
+              "message_id": "<005@enron.com>"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "question": "What was the Q3 revenue target?",
+    "matched_entities": [
+      "Q3 Revenue Target $45B"
+    ],
+    "results": [
+      {
+        "claim_id": "clm-6bd84ea3",
+        "claim_type": "HAS_REVENUE_TARGET",
+        "subject": "Enron Corporation",
+        "object": "Q3 Revenue Target $45B",
+        "confidence": 0.9,
+        "valid_from": "2001-09-05",
+        "valid_to": null,
+        "superseded_by": null,
+        "score": 0.975,
+        "reasons": [
+          "object matches query",
+          "claim type 'HAS_REVENUE_TARGET' matches"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ev-b3db2912",
+            "artifact_id": "msg-001",
+            "excerpt": "We need to hit $45B in revenue for Q3",
+            "timestamp": "2001-09-05T09:12:00Z",
+            "source_metadata": {
+              "from": "kenneth.lay@enron.com",
+              "to": [
+                "jeffrey.skilling@enron.com",
+                "andrew.fastow@enron.com"
+              ],
+              "cc": [],
+              "subject": "Q3 Revenue Targets",
+              "thread_id": "thread-alpha",
+              "message_id": "<001@enron.com>"
+            }
+          },
+          {
+            "evidence_id": "ev-fa4076d1",
+            "artifact_id": "msg-002",
+            "excerpt": "We need to hit $45B in revenue for Q3",
+            "timestamp": "2001-09-05T11:30:00Z",
+            "source_metadata": {
+              "from": "j.skilling@enron.com",
+              "to": [
+                "kenneth.lay@enron.com"
+              ],
+              "cc": [
+                "andrew.fastow@enron.com"
+              ],
+              "subject": "RE: Q3 Revenue Targets",
+              "thread_id": "thread-alpha",
+              "message_id": "<002@enron.com>"
+            }
+          },
+          {
+            "evidence_id": "ev-004a6f4e",
+            "artifact_id": "msg-006",
+            "excerpt": "Team,\n\nEnron remains in strong financial shape. Our stock is undervalued and I am buying more shares personally. The Q3 ",
+            "timestamp": "2001-11-01T10:00:00Z",
+            "source_metadata": {
+              "from": "kenneth.lay@enron.com",
+              "to": [
+                "all.employees@enron.com"
+              ],
+              "cc": [],
+              "subject": "Company Update",
+              "thread_id": "thread-gamma",
+              "message_id": "<006@enron.com>"
+            }
+          }
+        ]
+      },
+      {
+        "claim_id": "clm-5cf65c02",
+        "claim_type": "HELD_ROLE",
+        "subject": "Jeffrey Skilling",
+        "object": "CFO",
+        "confidence": 0.85,
+        "valid_from": "2001-10-01",
+        "valid_to": "2001-09-06",
+        "superseded_by": "clm-cf911b1d",
+        "score": 0.118,
+        "reasons": [
+          "claim type 'HELD_ROLE' matches",
+          "(historical \u2013 superseded)"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ev-012b6e62",
+            "artifact_id": "msg-001",
+            "excerpt": "Jeff will be taking over as CFO effective October 1st.",
+            "timestamp": "2001-09-05T09:12:00Z",
+            "source_metadata": {
+              "from": "kenneth.lay@enron.com",
+              "to": [
+                "jeffrey.skilling@enron.com",
+                "andrew.fastow@enron.com"
+              ],
+              "cc": [],
+              "subject": "Q3 Revenue Targets",
+              "thread_id": "thread-alpha",
+              "message_id": "<001@enron.com>"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "question": "What happened with the LJM debt?",
+    "matched_entities": [
+      "LJM Cayman Partnership",
+      "LJM Off-Balance-Sheet Debt $1.2B"
+    ],
+    "results": [
+      {
+        "claim_id": "clm-fe8e22cd",
+        "claim_type": "HAS_DEBT",
+        "subject": "Enron Corporation",
+        "object": "LJM Off-Balance-Sheet Debt $1.2B",
+        "confidence": 0.88,
+        "valid_from": "2001-10-12",
+        "valid_to": null,
+        "superseded_by": null,
+        "score": 0.739,
+        "reasons": [
+          "object matches query",
+          "claim type 'HAS_DEBT' matches"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ev-fee34c7a",
+            "artifact_id": "msg-008",
+            "excerpt": "The structure allows us to move $1.2B of debt off the books before year-end.",
+            "timestamp": "2001-10-12T14:55:00Z",
+            "source_metadata": {
+              "from": "andrew.fastow@enron.com",
+              "to": [
+                "richard.causey@enron.com"
+              ],
+              "cc": [],
+              "subject": "FWD: LJM Cayman \u2013 Accounting Treatment",
+              "thread_id": "thread-beta",
+              "message_id": "<008@enron.com>"
+            }
+          },
+          {
+            "evidence_id": "ev-5c28a128",
+            "artifact_id": "msg-007",
+            "excerpt": "Ken,\n\nWe are being forced to restate earnings going back to 1997. The SEC has opened a formal investigation. LJM structures will not survive scrutiny. We need to disclose the $1.2B debt immediately.\n\n",
+            "timestamp": "2001-11-08T16:45:00Z",
+            "source_metadata": {
+              "from": "andrew.fastow@enron.com",
+              "to": [
+                "kenneth.lay@enron.com"
+              ],
+              "cc": [],
+              "subject": "Restatement \u2013 URGENT",
+              "thread_id": "thread-gamma",
+              "message_id": "<007@enron.com>"
+            }
+          },
+          {
+            "evidence_id": "ev-6259a52c",
+            "artifact_id": "msg-004",
+            "excerpt": "The structure allows us to move $1.2B of debt off the books before year-end.",
+            "timestamp": "2001-10-12T14:22:00Z",
+            "source_metadata": {
+              "from": "andrew.fastow@enron.com",
+              "to": [
+                "sherron.watkins@enron.com"
+              ],
+              "cc": [],
+              "subject": "LJM Cayman \u2013 Accounting Treatment",
+              "thread_id": "thread-beta",
+              "message_id": "<004@enron.com>"
+            }
+          }
+        ]
+      },
+      {
+        "claim_id": "clm-c2c0ed26",
+        "claim_type": "INVOLVES_STRUCTURE",
+        "subject": "Enron Corporation",
+        "object": "LJM Cayman Partnership",
+        "confidence": 0.85,
+        "valid_from": "2001-10-12",
+        "valid_to": null,
+        "superseded_by": null,
+        "score": 0.476,
+        "reasons": [
+          "object matches query",
+          "claim type 'INVOLVES_STRUCTURE' matches"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "ev-69acca3d",
+            "artifact_id": "msg-004",
+            "excerpt": "LJM Cayman partnership",
+            "timestamp": "2001-10-12T14:22:00Z",
+            "source_metadata": {
+              "from": "andrew.fastow@enron.com",
+              "to": [
+                "sherron.watkins@enron.com"
+              ],
+              "cc": [],
+              "subject": "LJM Cayman \u2013 Accounting Treatment",
+              "thread_id": "thread-beta",
+              "message_id": "<004@enron.com>"
+            }
+          },
+          {
+            "evidence_id": "ev-42eafb95",
+            "artifact_id": "msg-008",
+            "excerpt": "LJM Cayman partnership",
+            "timestamp": "2001-10-12T14:55:00Z",
+            "source_metadata": {
+              "from": "andrew.fastow@enron.com",
+              "to": [
+                "richard.causey@enron.com"
+              ],
+              "cc": [],
+              "subject": "FWD: LJM Cayman \u2013 Accounting Treatment",
+              "thread_id": "thread-beta",
+              "message_id": "<008@enron.com>"
+            }
+          },
+          {
+            "evidence_id": "ev-8b1fe2cb",
+            "artifact_id": "msg-005",
+            "excerpt": "LJM",
+            "timestamp": "2001-10-15T09:05:00Z",
+            "source_metadata": {
+              "from": "sherron.watkins@enron.com",
+              "to": [
+                "kenneth.lay@enron.com"
+              ],
+              "cc": [],
+              "subject": "Concerns about accounting",
+              "thread_id": "thread-beta",
+              "message_id": "<005@enron.com>"
+            }
+          },
+          {
+            "evidence_id": "ev-c4a51369",
+            "artifact_id": "msg-007",
+            "excerpt": "LJM",
+            "timestamp": "2001-11-08T16:45:00Z",
+            "source_metadata": {
+              "from": "andrew.fastow@enron.com",
+              "to": [
+                "kenneth.lay@enron.com"
+              ],
+              "cc": [],
+              "subject": "Restatement \u2013 URGENT",
+              "thread_id": "thread-gamma",
+              "message_id": "<007@enron.com>"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

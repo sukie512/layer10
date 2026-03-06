@@ -1,0 +1,10 @@
+# No external dependencies required.
+# This project uses Python 3.10+ standard library only.
+#
+# To run:
+#   python3 extraction/extractor.py
+#   python3 retrieval/retriever.py
+#   open outputs/layer10_memory_graph.html
+#
+# Optional — only needed if you add the LLM extraction pass:
+# anthropic>=0.20.0
